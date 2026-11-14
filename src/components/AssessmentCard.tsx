@@ -1,5 +1,7 @@
 // Owner: P2. Step 1 output: recommendation, assumptions, blind spots (selectable).
+import type { StepSource } from "@/lib/api-client";
 import type { EvidenceSource, InitialAssessment } from "@/lib/types";
+import { StepSourceBadge } from "./ProvenanceBadge";
 import { Card, ConfidenceBlock, Label, LevelPill } from "./ui";
 
 export const sourceLabel: Record<EvidenceSource, string> = {
@@ -12,18 +14,23 @@ export const sourceLabel: Record<EvidenceSource, string> = {
 
 export function AssessmentCard({
   assessment,
+  source,
   selectedId,
   onSelect,
   locked,
+  hint,
 }: {
   assessment: InitialAssessment;
+  source: StepSource;
   selectedId: string;
   onSelect: (id: string) => void;
   locked: boolean;
+  /** Line under "Blind spots, ranked" describing what the user can do right now. */
+  hint: string;
 }) {
   const blindSpots = [...assessment.blindSpots].sort((a, b) => a.rank - b.rank);
   return (
-    <Card step={1} title="Initial assessment">
+    <Card step={1} title="Initial assessment" aside={<StepSourceBadge source={source} />}>
       <div className="space-y-5">
         <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-4 dark:border-indigo-900 dark:bg-indigo-950/40">
           <div className="text-xs font-semibold tracking-wide text-indigo-700 uppercase dark:text-indigo-300">
@@ -64,9 +71,7 @@ export function AssessmentCard({
 
         <div>
           <Label>Blind spots, ranked</Label>
-          <p className="mb-2 text-xs text-slate-500">
-            {locked ? "Research is underway on the selected blind spot." : "Pick the blind spot to research."}
-          </p>
+          <p className="mb-2 text-xs text-slate-500">{hint}</p>
           <div className="space-y-2" role="radiogroup" aria-label="Blind spots">
             {blindSpots.map((b) => {
               const selected = b.id === selectedId;
