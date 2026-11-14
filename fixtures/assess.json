@@ -1,0 +1,22 @@
+{
+  "_note": "DEMO FIXTURE: illustrative sample for UI development. Not real analysis or data.",
+  "decision": "Should I open a late-night café in Neighborhood A or Neighborhood B?",
+  "options": ["Neighborhood A", "Neighborhood B"],
+  "criteria": ["Late-night foot traffic", "Rent and operating cost", "Competition", "Customer willingness to pay"],
+  "recommendation": {
+    "choice": "Neighborhood A",
+    "rationale": "[Fixture] Based only on user-provided inputs and general assumptions, A looks more favorable because it is described as having more evening activity."
+  },
+  "assumptions": [
+    { "id": "a1", "text": "[Fixture] Evening activity in A translates into late-night café demand.", "source": "assumption" },
+    { "id": "a2", "text": "[Fixture] Residents of B are unwilling to travel for late-night coffee.", "source": "assumption" },
+    { "id": "a3", "text": "[Fixture] Price sensitivity is similar in both neighborhoods.", "source": "assumption" }
+  ],
+  "blindSpots": [
+    { "id": "b1", "question": "[Fixture] How many residents would actually visit a café after 10 PM, and how often?", "whyItMatters": "Late-night demand is the core of the business model; if it is weak, location advantages do not matter.", "impact": "high", "answerability": "high", "rank": 1 },
+    { "id": "b2", "question": "[Fixture] What would late-night customers pay per visit?", "whyItMatters": "Determines whether late hours cover staffing costs.", "impact": "high", "answerability": "medium", "rank": 2 },
+    { "id": "b3", "question": "[Fixture] Do existing late-night venues already satisfy demand?", "whyItMatters": "Competition could cap revenue.", "impact": "medium", "answerability": "medium", "rank": 3 }
+  ],
+  "selectedBlindSpotId": "b1",
+  "confidence": { "level": "low", "reason": "[Fixture] The recommendation rests on untested assumptions about late-night demand." }
+}

@@ -1,0 +1,12 @@
+{
+  "_note": "DEMO FIXTURE: illustrative sample for UI development.",
+  "before": { "choice": "Neighborhood A", "rationale": "[Fixture] Based on untested assumptions about evening activity." },
+  "after": { "choice": "Neighborhood A", "rationale": "[Fixture] Insufficient evidence to change the recommendation: the research step returned demo placeholders only." },
+  "changed": false,
+  "changedAssumptions": [],
+  "supporting": [],
+  "contradicting": [],
+  "limitations": ["[Fixture] No real or synthetic research evidence was used.", "Synthetic-panel results, when present, are directional and not a representative population estimate."],
+  "confidenceBefore": { "level": "low", "reason": "[Fixture] Untested assumptions." },
+  "confidenceAfter": { "level": "low", "reason": "[Fixture] No new evidence." }
+}
