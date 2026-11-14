@@ -52,10 +52,11 @@ API routes (src/app/api/*/route.ts), every body and response validated with zod 
 ```
 
 - **Claude:** `client.messages.parse` with `zodOutputFormat`, so every response is schema-checked. The model comes from `ANTHROPIC_MODEL` (default `claude-opus-5-5`).
-- **Flashpoint:** three studies were built and run through Flashpoint's MCP server (survey design, a 30-persona synthetic panel, analysis) and saved with their survey and panel IDs:
+- **Flashpoint:** four studies were built and run through Flashpoint's MCP server (survey design, a 30-persona synthetic panel, analysis) and saved with their survey and panel IDs:
   - **Café, Neighborhood A vs B:** late-night demand (`fixtures/research/flashpoint-*.json`).
   - **Football accessory store, Upper East Side vs Lower East Side:** in-store vs online buying (`fixtures/research/football-*.json`). Its survey is the exact plan the app generated live for that question.
   - **Indian restaurant, SoHo vs Upper East Side:** how often people eat Indian food, what they'd pay, and how satisfied they are (`fixtures/research/indian-*.json`), also the app's own live plan.
+  - **Model kit store in Times Square, official Bandai vs knockoff:** what shoppers would pay and how often they'd buy (`fixtures/research/bandai-*.json`). This one was run live from inside the app, then saved.
 - **Pinning:** for those two decisions, when the selected blind spot is the one the study asked about, `/api/research-plan` returns the study's plan (badged CAPTURED) so the findings line up with the questions shown. Studies are listed in `CAPTURED_STUDIES` in `src/lib/fixtures.ts`.
 - **Matching guard:** captured findings are only shown for the exact plan they answered (same question IDs and wording). Any other decision gets a labeled demo fixture, never borrowed numbers.
 - **Errors:** routes return `{ error, retryable }`. The UI shows the message, with a Retry button when it can help.
@@ -93,5 +94,5 @@ npm run smoke
 
 - **The research step uses a captured run, not a live one.** The app can reach Flashpoint's MCP server, but it needs a user's OAuth bearer token, and a full live run takes about 3 minutes (build the survey, run the panel, analyze). Live runs from the app, with a polling "running" state, are the next step.
 - **Synthetic personas, uncalibrated.** Only gender was matched to real population figures; age, race, education and income were generated. Neighborhood subgroups are tiny (13 and 16 personas).
-- **Three researched scenarios.** Only the café (A vs B), football store (Upper vs Lower East Side) and Indian restaurant (SoHo vs Upper East Side) questions have real research behind them. Other decisions work end to end, but their research step says plainly that no study has been run.
+- **Four saved studies.** The café (A vs B), football store (Upper vs Lower East Side), Indian restaurant (SoHo vs Upper East Side) and model kit store (Bandai vs knockoff) questions have saved research that loads instantly. Other decisions run live on Flashpoint once it's connected (a few minutes); without a connection their research step says plainly that no study has been run.
 - Stated intent (likelihood, spend) isn't observed behavior. Rent, zoning and competition weren't studied.

@@ -102,7 +102,7 @@ module.exports.SLIDES = [
     title: "Backup: studies run today",
     time: "Q&A only",
     say: [
-      "We ran three Flashpoint studies today, each from the app’s own plan, each with 30 AI personas, and each saved with its survey and panel IDs.",
+      "We ran four Flashpoint studies today, each from the app’s own plan, each with 30 AI personas, and each saved with its survey and panel IDs. The model kit one ran live from inside the app.",
     ],
     do: ["Use for “is it only one example?” or “is the data real?”."],
   },

@@ -1,0 +1,62 @@
+{
+  "blindSpotId": "b1",
+  "objective": "Gather directional signals on what shoppers in the Times Square area would pay for model kits and how often they would buy, to inform whether official-kit retail pricing could plausibly support high-rent operating costs.",
+  "targetSegment": "Adults 18+ who visit or live/work near Times Square, Manhattan, and who have bought or seriously considered buying a plastic model kit (e.g., Gunpla, anime, sci-fi or vehicle kits) in the past 12 months, mixing tourists, casual buyers and regular hobbyists.",
+  "sampleSize": 30,
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Which best describes your relationship with plastic model kits?",
+      "type": "single_select",
+      "options": [
+        "I build kits regularly (several per year)",
+        "I build occasionally (one or two per year)",
+        "I have bought kits mainly as gifts or souvenirs",
+        "I have browsed kits but rarely buy them"
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "For a mid-sized model kit (roughly 1/144 to 1/100 scale), what price range would you typically expect to pay at a physical store in Times Square?",
+      "type": "single_select",
+      "options": [
+        "Under $20",
+        "$20-$39",
+        "$40-$59",
+        "$60-$99",
+        "$100 or more",
+        "Not sure"
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Compared with buying the same kit online, how much more, if anything, would you be willing to pay to buy it in person at a Times Square store?",
+      "type": "single_select",
+      "options": [
+        "Nothing more; I expect the same or lower price",
+        "Up to 10% more",
+        "11-25% more",
+        "More than 25% more",
+        "I would not buy in a physical store"
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "How many model kits would you expect to buy from a Times Square model kit store in a typical year?",
+      "type": "single_select",
+      "options": [
+        "0",
+        "1",
+        "2-3",
+        "4-6",
+        "7 or more"
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "What factors, if any, would most influence how much you spend at a model kit store in this area?",
+      "type": "open_text"
+    }
+  ],
+  "neutralityNotes": "Questions ask about price expectations, store premiums and purchase frequency without mentioning brands, authenticity or the decision-maker's preferred option, use balanced ranges including 'not sure' or zero choices, and results are AI-persona directional signals that cannot substitute for actual wholesale cost, rent and distributor data."
+}

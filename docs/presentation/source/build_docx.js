@@ -56,7 +56,7 @@ const body = [
 
   new Paragraph({ children: [new PageBreak()] }),
   new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("Q&A: short answers (3 minutes)")] }),
-  p("Keep each answer under 30 seconds. Backup slides 10 (architecture) and 11 (the three studies) follow the closing slide.", { run: { color: MUTED } }),
+  p("Keep each answer under 30 seconds. Backup slides 10 (architecture) and 11 (the four studies) follow the closing slide.", { run: { color: MUTED } }),
   ...QA.flatMap(([q, a]) => [
     new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun(q)] }),
     p(a),

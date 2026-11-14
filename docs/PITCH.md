@@ -23,7 +23,7 @@ Deck: the "BlindSpot AI pitch" Slides artifact (speaker notes on every slide). D
 
 ## Q&A (3:00): short answers
 
-Keep each answer under 30 seconds. Backup slides 10 (architecture) and 11 (the three studies) are after the close.
+Keep each answer under 30 seconds. Backup slides 10 (architecture) and 11 (the four studies) are after the close.
 
 **Is this real data?**
 It's real Flashpoint output from a synthetic panel: 30 AI personas, not real people. We label it that way on every screen and treat it as directional. Each study is saved with its Flashpoint survey and panel IDs.

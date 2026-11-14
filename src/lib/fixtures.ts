@@ -57,6 +57,15 @@ export const CAPTURED_STUDIES: CapturedStudy[] = [
     // Diner demand: how often people eat or order Indian food (not rent, competition or concept).
     blindSpot: [/\b(eat|order|dine|visit|demand)\b/i],
   },
+  {
+    id: "bandai",
+    plan: "research/bandai-plan.json",
+    result: "research/bandai-capture.json",
+    options: ["bandai", "knockoff"],
+    decision: /bandai|model kit|gunpla/i,
+    // Shopper demand: what people would pay and how often they'd buy (not legal or supply risk).
+    blindSpot: [/\b(pay|price|pricing|spend|buy|purchas\w*|demand|willing)/i],
+  },
 ];
 
 const normOption = (s: string) => s.trim().toLowerCase().replace(/^the\s+/, "").replace(/\s+/g, " ");

@@ -254,14 +254,15 @@ function table(slide, rows, colW, y, name) {
 }
 {
   const s = pres.addSlide({ masterName: "CONTENT_DARK", sectionTitle: "Backup for Q&A" });
-  head(s, "Backup · studies run today", "Three Flashpoint studies, 30 AI personas each");
+  head(s, "Backup · studies run today", "Four Flashpoint studies, 30 AI personas each");
   table(s, [
     ["Decision", "What the personas said (directional)"],
     ["Late-night café, A vs B", "15 of 30 likely to visit; 7 of 13 near A vs 7 of 16 near B"],
     ["Football store, UES vs LES", "UES mostly in-store (6 of 12); LES mostly online (6 of 13)"],
     ["Indian restaurant, SoHo vs UES", "SoHo eats it more and is less satisfied; UES expects to pay more"],
+    ["Model kit store, Bandai vs knockoff", "13 of 30 expect $40–$59 a kit; 14 would pay up to 10% more in store (run live from the app)"],
   ], [3.8, W - 3.8], 2.3, "Studies table");
-  s.addText("Each was built from the app’s own plan and saved with its Flashpoint survey and panel IDs.",
+  s.addText("Each was built from the app’s own plan and saved with its Flashpoint survey and panel IDs; the model kit study ran live from inside the app.",
     tb({ x: M, y: 4.7, w: W, h: 0.4, fontSize: 13, color: HEX.muted }));
   notes(s, 10);
 }
