@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { ResearchPlan, ResearchPlanRequest, type InitialAssessment } from "@/lib/types";
 import { CAPTURED_PLAN, isDemoMode, loadFixture, loadOptionalFixture } from "@/lib/fixtures";
-import { apiError, handleError, parseBody } from "@/lib/http";
+import { apiError, handleError, parseBody, sourcedJson } from "@/lib/http";
 import { planResearch } from "@/lib/claude";
 
 export const maxDuration = 120;
@@ -29,13 +29,13 @@ export async function POST(req: Request) {
     return apiError(`Unknown blindSpotId "${blindSpotId}"`, 400);
   }
   try {
-    if (isDemoMode()) return NextResponse.json(await loadFixture("research-plan.json", ResearchPlan));
+    if (isDemoMode()) return sourcedJson(await loadFixture("research-plan.json", ResearchPlan), "fixture");
 
     const mode = process.env.RESEARCH_MODE ?? "captured";
     if (mode === "captured" && isCapturedScenario(assessment, blindSpotId)) {
       const captured = await loadOptionalFixture(CAPTURED_PLAN, ResearchPlan);
       if (captured) {
-        return NextResponse.json({ ...captured, blindSpotId }, { headers: { "x-blindspot-source": "captured-plan" } });
+        return sourcedJson({ ...captured, blindSpotId }, "captured-plan");
       }
     }
     return NextResponse.json(await planResearch(assessment, blindSpotId));
