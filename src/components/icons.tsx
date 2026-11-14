@@ -71,3 +71,10 @@ export const PlusIcon = (p: IconProps) => (
     <path d="M12 5v14M5 12h14" />
   </Svg>
 );
+
+export const SearchOffIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="M20 20l-4.4-4.4M8.5 8.5l5 5M13.5 8.5l-5 5" />
+  </Svg>
+);
