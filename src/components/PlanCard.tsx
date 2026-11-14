@@ -1,7 +1,9 @@
-// Owner: P2. Step 2 output: the research instrument.
+"use client";
+// Step 2 output: the research instrument.
 import type { StepSource } from "@/lib/api-client";
 import type { ResearchPlan } from "@/lib/types";
 import { StepSourceBadge } from "./ProvenanceBadge";
+import { Stagger, StaggerItem } from "./motion";
 import { Card, Label } from "./ui";
 
 const typeLabel = {
@@ -35,9 +37,9 @@ export function PlanCard({ plan, source }: { plan: ResearchPlan; source: StepSou
         </div>
         <div>
           <Label>Questions</Label>
-          <ol className="space-y-2">
+          <Stagger as="ol" className="space-y-2">
             {plan.questions.map((q, i) => (
-              <li key={q.id} className="rounded-lg bg-slate-50 p-3 text-sm dark:bg-slate-800/60">
+              <StaggerItem key={q.id} className="rounded-lg border border-slate-200 bg-slate-50 p-3.5 text-sm dark:border-slate-800 dark:bg-slate-800/40">
                 <div className="flex items-start justify-between gap-3">
                   <span>
                     <span className="mr-2 font-semibold text-slate-400">Q{i + 1}</span>
@@ -59,9 +61,9 @@ export function PlanCard({ plan, source }: { plan: ResearchPlan; source: StepSou
                     ))}
                   </div>
                 )}
-              </li>
+              </StaggerItem>
             ))}
-          </ol>
+          </Stagger>
         </div>
         <div>
           <Label>Neutrality notes</Label>

@@ -1,0 +1,85 @@
+{
+  "_note": "CAPTURED: live /api/assess output (Claude, 2026-11-14) for the café demo question and options. Served only when the live call fails for exactly that input.",
+  "decision": "Should I open a late-night café in Neighborhood A or Neighborhood B?",
+  "options": [
+    "Neighborhood A",
+    "Neighborhood B"
+  ],
+  "criteria": [
+    "Late-night foot traffic and demand from likely customers (e.g., students, shift workers, nightlife-goers).",
+    "Rent and operating costs relative to expected revenue.",
+    "Competition from existing late-night food and drink options.",
+    "Safety, zoning, and permitted operating hours for late-night business.",
+    "Accessibility via transit, parking, and walkability at night."
+  ],
+  "recommendation": {
+    "choice": "Neighborhood A",
+    "rationale": "No data distinguishing the neighborhoods was provided, so this is an arbitrary placeholder choice, not an evidence-based preference. It should be revised once late-night demand and costs for each neighborhood are known."
+  },
+  "assumptions": [
+    {
+      "id": "a1",
+      "text": "Neither neighborhood has been described, so any preference between them is currently unsupported.",
+      "source": "assumption"
+    },
+    {
+      "id": "a2",
+      "text": "A late-night café's viability depends mainly on sustained demand after typical business hours, not daytime traffic.",
+      "source": "assumption"
+    },
+    {
+      "id": "a3",
+      "text": "Rent and labor costs for late-night hours are comparable enough between the two neighborhoods that demand is the deciding factor.",
+      "source": "assumption"
+    },
+    {
+      "id": "a4",
+      "text": "Local regulations allow late-night operation in both neighborhoods.",
+      "source": "assumption"
+    },
+    {
+      "id": "a5",
+      "text": "Late-night businesses generally face higher staffing and security costs than daytime-only businesses.",
+      "source": "public_info"
+    }
+  ],
+  "blindSpots": [
+    {
+      "id": "b1",
+      "question": "In which neighborhood do people who are out between roughly 9pm and 2am say they would visit a café, and how often?",
+      "whyItMatters": "Late-night demand is the core driver of revenue and could clearly favor one neighborhood.",
+      "impact": "high",
+      "answerability": "high",
+      "rank": 1
+    },
+    {
+      "id": "b2",
+      "question": "What are the available commercial rents and lease terms in each neighborhood?",
+      "whyItMatters": "A large cost difference could outweigh a modest demand advantage.",
+      "impact": "high",
+      "answerability": "medium",
+      "rank": 2
+    },
+    {
+      "id": "b3",
+      "question": "Do zoning rules, licensing, or resident opposition restrict late-night hours in either neighborhood?",
+      "whyItMatters": "A restriction on hours could make one option infeasible regardless of demand.",
+      "impact": "high",
+      "answerability": "low",
+      "rank": 3
+    },
+    {
+      "id": "b4",
+      "question": "How many existing late-night food or drink venues already serve each neighborhood?",
+      "whyItMatters": "Saturation could reduce share of demand even where foot traffic is high.",
+      "impact": "medium",
+      "answerability": "medium",
+      "rank": 4
+    }
+  ],
+  "selectedBlindSpotId": "b1",
+  "confidence": {
+    "level": "low",
+    "reason": "No information about either neighborhood was given, so the recommendation is a placeholder resting entirely on assumptions."
+  }
+}

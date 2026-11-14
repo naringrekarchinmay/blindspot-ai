@@ -1,7 +1,10 @@
-// Owner: P2. Step 4 output: before vs after.
+"use client";
+// Step 4 output: before vs after. The "after" side lands a beat later so the change reads as a change.
 import type { StepSource } from "@/lib/api-client";
 import type { Reassessment } from "@/lib/types";
 import { StepSourceBadge } from "./ProvenanceBadge";
+import { ArrowRightIcon } from "./icons";
+import { Reveal } from "./motion";
 import { BulletList, Card, Label, LevelPill } from "./ui";
 
 export function ReassessCard({ reassessment: r, source }: { reassessment: Reassessment; source: StepSource }) {
@@ -18,36 +21,55 @@ export function ReassessCard({ reassessment: r, source }: { reassessment: Reasse
               ["Before research", r.before, r.confidenceBefore],
               ["After research", r.after, r.confidenceAfter],
             ] as const
-          ).map(([label, rec, conf]) => (
-            <div key={label} className="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+          ).map(([label, rec, conf], i) => (
+            <Reveal
+              key={label}
+              delay={i * 0.25}
+              className={`rounded-xl border p-4 ${
+                i === 1
+                  ? "border-brand-200 bg-brand-50/60 dark:border-brand-900 dark:bg-brand-950/40"
+                  : "border-slate-200 dark:border-slate-800"
+              }`}
+            >
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xs font-semibold tracking-wide text-slate-500 uppercase">{label}</span>
                 <LevelPill level={conf.level} prefix="confidence" />
               </div>
-              <div className="mt-1 text-lg font-bold">{rec.choice}</div>
+              <div className="mt-1 font-serif text-2xl font-semibold text-slate-900 dark:text-slate-50">{rec.choice}</div>
               <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{rec.rationale}</p>
-              <p className="mt-2 text-xs text-slate-500">{conf.reason}</p>
-            </div>
+              <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{conf.reason}</p>
+            </Reveal>
           ))}
         </div>
 
-        <div
-          className={`rounded-xl p-3 text-sm font-medium ${
+        <Reveal
+          delay={0.5}
+          className={`flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl p-3 text-sm font-bold ${
             r.changed
-              ? "bg-indigo-50 text-indigo-900 dark:bg-indigo-950/50 dark:text-indigo-200"
+              ? "bg-brand-50 text-brand-900 dark:bg-brand-950/50 dark:text-brand-200"
               : "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
           }`}
         >
-          {r.changed
-            ? `Recommendation changed: ${r.before.choice} → ${r.after.choice}`
-            : `Recommendation unchanged: still ${r.after.choice}`}
-          {r.confidenceBefore.level !== r.confidenceAfter.level
-            ? ` · confidence ${r.confidenceBefore.level} → ${r.confidenceAfter.level}`
-            : ` · confidence stays ${r.confidenceAfter.level}`}
-        </div>
+          {r.changed ? (
+            <>
+              Recommendation changed: {r.before.choice} <ArrowRightIcon className="shrink-0" /> {r.after.choice}
+            </>
+          ) : (
+            <>Recommendation unchanged: still {r.after.choice}</>
+          )}
+          <span className="font-normal text-slate-500 dark:text-slate-400">
+            {r.confidenceBefore.level !== r.confidenceAfter.level ? (
+              <>
+                {" "}· confidence {r.confidenceBefore.level} to {r.confidenceAfter.level}
+              </>
+            ) : (
+              <> · confidence stays {r.confidenceAfter.level}</>
+            )}
+          </span>
+        </Reveal>
 
         {r.changedAssumptions.length > 0 && (
-          <div>
+          <Reveal delay={0.65}>
             <Label>Assumptions updated</Label>
             <ul className="space-y-2">
               {r.changedAssumptions.map((a) => (
@@ -55,14 +77,14 @@ export function ReassessCard({ reassessment: r, source }: { reassessment: Reasse
                   <div className="rounded-lg bg-slate-50 p-2 text-slate-500 line-through decoration-slate-300 dark:bg-slate-800/60">
                     {a.before}
                   </div>
-                  <div className="rounded-lg bg-indigo-50 p-2 dark:bg-indigo-950/40">{a.after}</div>
+                  <div className="rounded-lg bg-brand-50 p-2 dark:bg-brand-950/40">{a.after}</div>
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
         )}
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <Reveal delay={0.75} className="grid gap-4 sm:grid-cols-2">
           <div>
             <Label>Supporting evidence</Label>
             <BulletList items={r.supporting} />
@@ -71,7 +93,7 @@ export function ReassessCard({ reassessment: r, source }: { reassessment: Reasse
             <Label>Contradicting evidence</Label>
             <BulletList items={r.contradicting} />
           </div>
-        </div>
+        </Reveal>
 
         <div>
           <Label>Limitations</Label>

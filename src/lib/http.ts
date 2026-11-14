@@ -8,10 +8,12 @@ export function apiError(error: string, status: number, retryable = false) {
 }
 
 // Marks a step that came from saved data instead of a live call. The UI reads it to badge the step.
-// Values: "fixture" (DEMO_MODE=fixtures), "captured-plan", "captured-reassess".
+// Values: "fixture" (DEMO_MODE=fixtures), "captured-assess", "captured-plan", "captured-reassess".
 export const SOURCE_HEADER = "x-blindspot-source";
 
-export function sourcedJson<T>(data: T, source: "fixture" | "captured-plan" | "captured-reassess") {
+export type SourceValue = "fixture" | "captured-assess" | "captured-plan" | "captured-reassess";
+
+export function sourcedJson<T>(data: T, source: SourceValue) {
   return NextResponse.json(data, { headers: { [SOURCE_HEADER]: source } });
 }
 

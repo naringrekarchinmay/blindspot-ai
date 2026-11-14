@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { MotionConfig } from "motion/react";
 import * as api from "@/lib/api-client";
 import { ApiClientError, type StepSource } from "@/lib/api-client";
 import type { InitialAssessment, Reassessment, ResearchPlan, ResearchResult } from "@/lib/types";
@@ -10,6 +11,7 @@ import { ReassessCard } from "@/components/ReassessCard";
 import { ResearchCard } from "@/components/ResearchCard";
 import { StepTimeline, type StepStatus } from "@/components/StepTimeline";
 import { Button, ErrorBox, Spinner } from "@/components/ui";
+import { ArrowRightIcon, PlusIcon, SparkIcon, XIcon } from "@/components/icons";
 
 const DEMO = {
   question: "Should I open a late-night café in Neighborhood A or Neighborhood B?",
@@ -153,29 +155,35 @@ export default function Home() {
 
   const errorFor = (step: Step) =>
     error?.step === step ? <ErrorBox message={error.message} onRetry={error.retry} /> : null;
-  const spinnerFor = (step: Step) => (loading === step ? <Spinner label={LOADING_TEXT[step]} /> : null);
+  const SKELETON_LINES: Record<Step, number> = { assess: 5, plan: 4, research: 3, reassess: 4 };
+  const spinnerFor = (step: Step) =>
+    loading === step ? <Spinner label={LOADING_TEXT[step]} lines={SKELETON_LINES[step]} /> : null;
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8 sm:py-12">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
-          BlindSpot <span className="text-indigo-600">AI</span>
+    <MotionConfig reducedMotion="user">
+    <main className="mx-auto max-w-3xl px-4 py-10 sm:py-16">
+      <header className="mb-6">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/70 px-3 py-1 text-xs font-bold tracking-wide text-brand-700 dark:border-brand-900 dark:bg-slate-900/60 dark:text-brand-300">
+          <SparkIcon size={14} /> Decision research with Flashpoint.AI
+        </div>
+        <h1 className="text-5xl font-semibold tracking-tight text-slate-900 sm:text-6xl dark:text-slate-50">
+          BlindSpot <span className="text-brand-600 dark:text-brand-400">AI</span>
         </h1>
-        <p className="mt-2 text-slate-600 dark:text-slate-400">
+        <p className="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
           Finds the question your decision depends on but nobody has asked, researches it, and tells you honestly
           whether the answer changes anything.
         </p>
-        <div className="mt-5">
-          <StepTimeline statuses={statuses} />
-        </div>
       </header>
+      <div className="sticky top-0 z-20 -mx-4 mb-6 border-b border-slate-200/70 bg-[var(--background)]/80 px-4 py-3 backdrop-blur-md dark:border-slate-800/70">
+        <StepTimeline statuses={statuses} />
+      </div>
 
       <div className="space-y-6">
         <form
           onSubmit={analyze}
-          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 dark:border-slate-800 dark:bg-slate-900"
+          className="rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-[0_1px_2px_rgb(15_23_42/0.04),0_8px_24px_-12px_rgb(15_23_42/0.12)] backdrop-blur-sm sm:p-7 dark:border-slate-800 dark:bg-slate-900/80"
         >
-          <label htmlFor="question" className="mb-1 block text-sm font-semibold">
+          <label htmlFor="question" className="mb-2 block font-serif text-xl font-semibold">
             What are you deciding?
           </label>
           <textarea
@@ -185,7 +193,7 @@ export default function Home() {
             rows={2}
             disabled={!!assessment || !!loading}
             placeholder="e.g. Should I open a late-night café in Neighborhood A or Neighborhood B?"
-            className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none disabled:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:disabled:bg-slate-900"
+            className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none disabled:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:disabled:bg-slate-900"
           />
 
           <div className="mt-4 mb-1 text-sm font-semibold">Options</div>
@@ -198,16 +206,16 @@ export default function Home() {
                   onChange={(e) => setOptions(options.map((o, j) => (j === i ? e.target.value : o)))}
                   disabled={!!assessment || !!loading}
                   placeholder={`Option ${i + 1}`}
-                  className="min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none disabled:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:disabled:bg-slate-900"
+                  className="min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none disabled:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:disabled:bg-slate-900"
                 />
                 {options.length > 2 && !assessment && (
                   <button
                     type="button"
                     onClick={() => setOptions(options.filter((_, j) => j !== i))}
-                    className="rounded-lg px-2 text-slate-400 hover:text-rose-600"
+                    className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-2 focus-visible:outline-brand-300 dark:hover:bg-rose-950/40"
                     aria-label={`Remove option ${i + 1}`}
                   >
-                    ✕
+                    <XIcon />
                   </button>
                 )}
               </div>
@@ -221,7 +229,7 @@ export default function Home() {
               </Button>
               {options.length < 5 && (
                 <Button variant="secondary" onClick={() => setOptions([...options, ""])} disabled={!!loading}>
-                  + Add option
+                  <PlusIcon /> Add option
                 </Button>
               )}
               <button
@@ -231,7 +239,7 @@ export default function Home() {
                   setOptions(DEMO.options);
                 }}
                 disabled={!!loading}
-                className="ml-auto text-sm font-medium text-indigo-600 hover:underline disabled:opacity-50 dark:text-indigo-400"
+                className="ml-auto min-h-11 cursor-pointer rounded-lg px-2 text-sm font-bold text-brand-600 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-brand-300 disabled:opacity-50 dark:text-brand-400"
               >
                 Use café demo
               </button>
@@ -267,7 +275,7 @@ export default function Home() {
               <div className="space-y-3">
                 {!loading && (
                   <Button onClick={makePlan} disabled={!blindSpotId}>
-                    Research this blind spot →
+                    Research this blind spot <ArrowRightIcon />
                   </Button>
                 )}
                 {spinnerFor("plan")}
@@ -284,7 +292,9 @@ export default function Home() {
               <div className="space-y-3">
                 {!loading && (
                   <div className="flex flex-wrap gap-2">
-                    <Button onClick={runResearch}>Run research →</Button>
+                    <Button onClick={runResearch}>
+                      Run research <ArrowRightIcon />
+                    </Button>
                     <Button variant="secondary" onClick={() => resetFrom("plan")}>
                       Pick a different blind spot
                     </Button>
@@ -302,7 +312,11 @@ export default function Home() {
             <ResearchCard result={result} plan={plan.data} />
             {!reassessment && (
               <div className="space-y-3">
-                {!loading && <Button onClick={runReassess}>Reassess the decision →</Button>}
+                {!loading && (
+                  <Button onClick={runReassess}>
+                    Reassess the decision <ArrowRightIcon />
+                  </Button>
+                )}
                 {spinnerFor("reassess")}
                 {errorFor("reassess")}
               </div>
@@ -323,5 +337,6 @@ export default function Home() {
         <div ref={bottomRef} />
       </div>
     </main>
+    </MotionConfig>
   );
 }

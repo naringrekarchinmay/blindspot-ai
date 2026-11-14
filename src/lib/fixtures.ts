@@ -16,6 +16,20 @@ export async function loadFixture<T>(name: string, schema: ZodType<T>): Promise<
 // The captured Flashpoint study: the plan its survey was built from and the run that answered it.
 export const CAPTURED_PLAN = "research/flashpoint-plan.json";
 export const CAPTURED_RESULT = "research/flashpoint-capture.json";
+// Live Claude outputs for the café demo, served only when a live call fails on that exact input.
+export const CAPTURED_ASSESS = "research/assess-capture.json";
+export const CAPTURED_REASSESS = "research/reassess-capture.json";
+
+export const DEMO_QUESTION = "Should I open a late-night café in Neighborhood A or Neighborhood B?";
+export const DEMO_OPTIONS = ["Neighborhood A", "Neighborhood B"];
+
+const norm = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
+
+/** True for the café demo question with exactly its two options (order and spacing ignored). */
+export function isDemoQuestion(question: string, options: string[]) {
+  const opts = options.map(norm).sort();
+  return norm(question) === norm(DEMO_QUESTION) && opts.join("|") === DEMO_OPTIONS.map(norm).sort().join("|");
+}
 
 // True when `plan` asks exactly the captured survey's questions (same ids, text and order),
 // i.e. when the captured findings actually answer it.
