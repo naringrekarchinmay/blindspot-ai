@@ -1,4 +1,7 @@
-// Owner: P2. Step 3 output: findings with provenance, synthetic notice and caveats.
+"use client";
+// Step 3 output: findings with provenance, synthetic notice and caveats.
+import { motion } from "motion/react";
+import { EASE_OUT, Stagger, StaggerItem } from "./motion";
 import type { Finding, ResearchPlan, ResearchResult } from "@/lib/types";
 import { ProvenanceBadge, SyntheticNotice } from "./ProvenanceBadge";
 import { BulletList, Card, Label } from "./ui";
@@ -9,13 +12,18 @@ function DistributionBars({ distribution, unit }: { distribution: Record<string,
   const max = Math.max(1, ...entries.map(([, v]) => v));
   return (
     <div className="space-y-1.5">
-      {entries.map(([label, count]) => (
+      {entries.map(([label, count], i) => (
         <div key={label} className="grid grid-cols-[minmax(0,7rem)_1fr_auto] items-center gap-2 text-xs sm:grid-cols-[minmax(0,10rem)_1fr_auto]">
           <span className="truncate text-slate-600 dark:text-slate-400" title={label}>
             {label}
           </span>
-          <div className="h-4 rounded bg-slate-100 dark:bg-slate-800">
-            <div className="h-4 rounded bg-indigo-500" style={{ width: `${(count / max) * 100}%` }} />
+          <div className="h-4 overflow-hidden rounded bg-slate-100 dark:bg-slate-800">
+            <motion.div
+              className="h-4 origin-left rounded bg-brand-500"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: count / max }}
+              transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.15 + i * 0.06 }}
+            />
           </div>
           <span className="w-16 text-right tabular-nums text-slate-700 dark:text-slate-300">
             {count}
@@ -40,7 +48,7 @@ function FindingBlock({
   unit: string;
 }) {
   return (
-    <li className="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+    <StaggerItem className="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
       <div className="mb-2 text-sm font-medium">
         <span className="mr-2 text-slate-400">Q{index + 1}</span>
         {questionText ?? finding.questionId}
@@ -57,14 +65,14 @@ function FindingBlock({
           {finding.quotes.map((q, i) => (
             <blockquote
               key={i}
-              className="border-l-2 border-indigo-300 pl-3 text-sm text-slate-600 italic dark:border-indigo-700 dark:text-slate-400"
+              className="border-l-2 border-brand-300 pl-3 text-sm text-slate-600 italic dark:border-brand-700 dark:text-slate-400"
             >
               “{q}”
             </blockquote>
           ))}
         </div>
       )}
-    </li>
+    </StaggerItem>
   );
 }
 
@@ -83,7 +91,7 @@ export function ResearchCard({ result, plan }: { result: ResearchResult; plan: R
         {result.status !== "completed" && (
           <p className="text-sm text-amber-700 dark:text-amber-300">Research status: {result.status}</p>
         )}
-        <ul className="space-y-3">
+        <Stagger className="space-y-3">
           {findings.map((f, i) => {
             const qi = questionIndex.get(f.questionId);
             return (
@@ -96,7 +104,7 @@ export function ResearchCard({ result, plan }: { result: ResearchResult; plan: R
               />
             );
           })}
-        </ul>
+        </Stagger>
         <div>
           <Label>Caveats</Label>
           <BulletList items={result.caveats} />

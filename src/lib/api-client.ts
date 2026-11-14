@@ -1,4 +1,4 @@
-// Owner: P2. Typed browser client for the four BlindSpot API routes.
+// Typed browser client for the four BlindSpot API routes.
 import type {
   ApiError,
   AssessRequest,
