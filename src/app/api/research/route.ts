@@ -8,7 +8,7 @@ import {
   loadOptionalFixture,
   samePlanQuestions,
 } from "@/lib/fixtures";
-import { parseBody } from "@/lib/http";
+import { parseBody, sourcedJson } from "@/lib/http";
 
 // Order: live Flashpoint (RESEARCH_MODE=live) -> captured Flashpoint run -> demo fixture.
 // The captured run is served only for the exact plan it answered; any other plan gets the
@@ -26,7 +26,8 @@ export async function POST(req: Request) {
     ]);
     if (plan && captured && samePlanQuestions(body.data.plan, plan)) return NextResponse.json(captured);
   }
-  return NextResponse.json(await demoFixtureFor(body.data.plan));
+  const fixture = await demoFixtureFor(body.data.plan);
+  return isDemoMode() ? sourcedJson(fixture, "fixture") : NextResponse.json(fixture);
 }
 
 // The topic-neutral demo fixture, with one explicit "no data" finding per plan question,

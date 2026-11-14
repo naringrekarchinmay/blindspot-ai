@@ -7,6 +7,14 @@ export function apiError(error: string, status: number, retryable = false) {
   return NextResponse.json<ApiError>({ error, retryable }, { status });
 }
 
+// Marks a step that came from saved data instead of a live call. The UI reads it to badge the step.
+// Values: "fixture" (DEMO_MODE=fixtures), "captured-plan", "captured-reassess".
+export const SOURCE_HEADER = "x-blindspot-source";
+
+export function sourcedJson<T>(data: T, source: "fixture" | "captured-plan" | "captured-reassess") {
+  return NextResponse.json(data, { headers: { [SOURCE_HEADER]: source } });
+}
+
 export async function parseBody<T>(req: Request, schema: ZodType<T>) {
   let json: unknown;
   try {
