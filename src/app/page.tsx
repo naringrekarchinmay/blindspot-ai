@@ -32,6 +32,7 @@ export default function Home() {
   const [options, setOptions] = useState<string[]>(["", ""]);
 
   const [assessment, setAssessment] = useState<InitialAssessment | null>(null);
+  const [assessmentSource, setAssessmentSource] = useState<StepSource>(null);
   const [blindSpotId, setBlindSpotId] = useState<string>("");
   const [plan, setPlan] = useState<{ data: ResearchPlan; source: StepSource } | null>(null);
   const [result, setResult] = useState<ResearchResult | null>(null);
@@ -68,6 +69,7 @@ export default function Home() {
   function resetFrom(step: Step) {
     if (step === "assess") {
       setAssessment(null);
+      setAssessmentSource(null);
       setBlindSpotId("");
     }
     if (step === "assess" || step === "plan") setPlan(null);
@@ -87,8 +89,9 @@ export default function Home() {
     run(
       "assess",
       () => api.assess(body),
-      ({ data }) => {
+      ({ data, source }) => {
         setAssessment(data);
+        setAssessmentSource(source);
         setBlindSpotId(data.selectedBlindSpotId);
       },
       () => analyze(),
@@ -138,6 +141,15 @@ export default function Home() {
   const done = [!!assessment, !!plan, !!result, !!reassessment];
   const loadingIndex = loading ? (["assess", "plan", "research", "reassess"] as Step[]).indexOf(loading) : -1;
   const statuses: StepStatus[] = done.map((d, i) => (i === loadingIndex ? "active" : d ? "done" : "todo"));
+
+  const blindSpotHint =
+    loading === "plan"
+      ? "Writing a research plan for the selected blind spot…"
+      : !plan
+        ? "Pick the blind spot to research."
+        : !result && !loading
+          ? "Selected for research. To change it, use “Pick a different blind spot” below."
+          : "This is the blind spot being researched. Start over to try a different one.";
 
   const errorFor = (step: Step) =>
     error?.step === step ? <ErrorBox message={error.message} onRetry={error.retry} /> : null;
@@ -242,12 +254,14 @@ export default function Home() {
           <>
             <AssessmentCard
               assessment={assessment}
+              source={assessmentSource}
               selectedId={blindSpotId}
               onSelect={(id) => {
                 setBlindSpotId(id);
                 resetFrom("plan");
               }}
               locked={!!loading || !!plan}
+              hint={blindSpotHint}
             />
             {!plan && (
               <div className="space-y-3">

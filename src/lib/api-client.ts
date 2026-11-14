@@ -11,8 +11,13 @@ import type {
   ResearchResult,
 } from "./types";
 
-/** Value of the `x-blindspot-source` header: set when a step came from saved data, not a live call. */
-export type StepSource = "captured-plan" | "captured-reassess" | null;
+/**
+ * Value of the `x-blindspot-source` header: set when a step came from saved data, not a live call.
+ * "fixture" = DEMO_MODE=fixtures (any route); "captured-*" = saved data from the captured Flashpoint run.
+ */
+export type StepSource = "fixture" | "captured-plan" | "captured-reassess" | null;
+
+const STEP_SOURCES = new Set<string>(["fixture", "captured-plan", "captured-reassess"]);
 
 export type ApiResponse<T> = { data: T; source: StepSource };
 
@@ -54,8 +59,7 @@ async function post<T>(path: string, body: unknown): Promise<ApiResponse<T>> {
   }
 
   const header = res.headers.get("x-blindspot-source");
-  const source: StepSource =
-    header === "captured-plan" || header === "captured-reassess" ? header : null;
+  const source = header && STEP_SOURCES.has(header) ? (header as StepSource) : null;
 
   return { data: json as T, source };
 }

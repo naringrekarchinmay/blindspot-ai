@@ -1,4 +1,5 @@
 // Owner: P2. Provenance badges (non-negotiable: every research result shows where it came from).
+import type { StepSource } from "@/lib/api-client";
 import type { Provenance } from "@/lib/types";
 
 type BadgeKind = "live" | "captured" | "fixture";
@@ -22,6 +23,20 @@ export function Badge({ kind, detail }: { kind: BadgeKind; detail?: string }) {
       {detail && <span className="text-slate-600 dark:text-slate-400">{detail}</span>}
     </span>
   );
+}
+
+/** Badge for a step whose response came from saved data (x-blindspot-source header). */
+export function StepSourceBadge({ source }: { source: StepSource }) {
+  switch (source) {
+    case "fixture":
+      return <Badge kind="fixture" detail="Sample data, not a live Claude call" />;
+    case "captured-plan":
+      return <Badge kind="captured" detail="Saved plan the Flashpoint survey was built from" />;
+    case "captured-reassess":
+      return <Badge kind="captured" detail="Live Claude call failed; showing the saved reassessment" />;
+    default:
+      return null;
+  }
 }
 
 export function formatTimestamp(iso?: string) {

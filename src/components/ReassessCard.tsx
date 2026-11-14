@@ -1,7 +1,7 @@
 // Owner: P2. Step 4 output: before vs after.
 import type { StepSource } from "@/lib/api-client";
 import type { Reassessment } from "@/lib/types";
-import { Badge } from "./ProvenanceBadge";
+import { StepSourceBadge } from "./ProvenanceBadge";
 import { BulletList, Card, Label, LevelPill } from "./ui";
 
 export function ReassessCard({ reassessment: r, source }: { reassessment: Reassessment; source: StepSource }) {
@@ -9,11 +9,7 @@ export function ReassessCard({ reassessment: r, source }: { reassessment: Reasse
     <Card
       step={4}
       title="Reassessment"
-      aside={
-        source === "captured-reassess" ? (
-          <Badge kind="captured" detail="Live Claude call failed; showing the saved reassessment" />
-        ) : undefined
-      }
+      aside={<StepSourceBadge source={source} />}
     >
       <div className="space-y-5">
         <div className="grid gap-3 sm:grid-cols-2">

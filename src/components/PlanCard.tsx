@@ -1,7 +1,7 @@
 // Owner: P2. Step 2 output: the research instrument.
 import type { StepSource } from "@/lib/api-client";
 import type { ResearchPlan } from "@/lib/types";
-import { Badge } from "./ProvenanceBadge";
+import { StepSourceBadge } from "./ProvenanceBadge";
 import { Card, Label } from "./ui";
 
 const typeLabel = {
@@ -16,11 +16,7 @@ export function PlanCard({ plan, source }: { plan: ResearchPlan; source: StepSou
     <Card
       step={2}
       title="Research plan"
-      aside={
-        source === "captured-plan" ? (
-          <Badge kind="captured" detail="Saved plan the Flashpoint survey was built from" />
-        ) : undefined
-      }
+      aside={<StepSourceBadge source={source} />}
     >
       <div className="space-y-4">
         <div className="grid gap-3 sm:grid-cols-3">
