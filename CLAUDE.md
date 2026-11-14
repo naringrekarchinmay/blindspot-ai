@@ -1,21 +1,21 @@
-# BlindSpot AI: rules for Claude Code (both teammates)
+# BlindSpot AI: rules for Claude Code
 
 Hackathon project, build window 11:00-3:30 PM ET on 2026-11-14. Full brief: `BLINDSPOT_AI_CLAUDE_PLAN.md`.
 Stack: Next.js 15 (app router, `src/`), TypeScript, Tailwind, zod, `@anthropic-ai/sdk`.
 
-## Who owns what (stay inside your paths)
-| Owner | Paths |
+## Who works where
+Since 12:15 PM all work happens on one machine (Chinmay's), backend and UI alike. The split below is kept as a map of the code, not as an edit restriction.
+| Area | Paths |
 |---|---|
-| P1 Chinmay (AI/backend) | `src/lib/types.ts`, `src/lib/claude.ts`, `src/lib/prompts.ts`, `src/lib/flashpoint.ts`, `src/lib/fixtures.ts`, `src/lib/http.ts`, `src/app/api/**`, `fixtures/**`, `scripts/**`, `CLAUDE.md` |
-| P2 Dolly (UI/demo) | `src/app/page.tsx`, `src/app/layout.tsx`, `src/app/globals.css`, `src/components/**`, `src/lib/api-client.ts`, `public/**`, `docs/**` |
-| Shared | `README.md` (P2 drafts, P1 adds setup and architecture), `package.json` (tell the other person before adding deps) |
+| AI/backend | `src/lib/types.ts`, `src/lib/claude.ts`, `src/lib/prompts.ts`, `src/lib/flashpoint.ts`, `src/lib/fixtures.ts`, `src/lib/http.ts`, `src/app/api/**`, `fixtures/**`, `scripts/**` |
+| UI/demo | `src/app/page.tsx`, `src/app/layout.tsx`, `src/app/globals.css`, `src/components/**`, `src/lib/api-client.ts`, `public/**`, `docs/**` |
+| Shared | `README.md`, `package.json`, `CLAUDE.md`, `HANDOVER.md` |
 
-If a task needs a file you don't own, stop and say so. Don't edit it. Ask the owner or open a small PR.
-`src/lib/types.ts` is the contract: change it only through a PR both people review.
+`src/lib/types.ts` is the contract: change it on purpose, in its own commit, and update both the routes and the UI.
 
 ## Git
-- `main` must always run. Work on `p1/backend` or `p2/ui`. Make small PRs and squash-merge.
-- `git pull origin main` before starting each task.
+- `main` must always run. Work on a short-lived `p1/<topic>` branch off `main`, make small PRs, and squash-merge.
+- `git pull origin main` before starting each task. `p2/ui` is retired; don't build on it.
 
 ## API (all POST, JSON, typed by `src/lib/types.ts`)
 - `/api/assess` `{question, options}` -> `InitialAssessment`
