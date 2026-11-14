@@ -212,7 +212,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setOptions(options.filter((_, j) => j !== i))}
-                    className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-2 focus-visible:outline-brand-500 dark:hover:bg-rose-950/40"
+                    className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-2 focus-visible:outline-brand-300 dark:hover:bg-rose-950/40"
                     aria-label={`Remove option ${i + 1}`}
                   >
                     <XIcon />
@@ -239,7 +239,7 @@ export default function Home() {
                   setOptions(DEMO.options);
                 }}
                 disabled={!!loading}
-                className="ml-auto min-h-11 cursor-pointer rounded-lg px-2 text-sm font-bold text-brand-600 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-brand-500 disabled:opacity-50 dark:text-brand-400"
+                className="ml-auto min-h-11 cursor-pointer rounded-lg px-2 text-sm font-bold text-brand-600 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-brand-300 disabled:opacity-50 dark:text-brand-400"
               >
                 Use café demo
               </button>

@@ -28,7 +28,7 @@ export function Card({
       <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <h2 className="flex items-center gap-3 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">
           {step !== undefined && (
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 font-sans text-sm font-bold text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-400 font-sans text-sm font-bold text-slate-950">
               {step}
             </span>
           )}
@@ -90,14 +90,14 @@ export function Button({
 }) {
   const styles =
     variant === "primary"
-      ? "bg-brand-600 text-white shadow-sm hover:bg-brand-700 disabled:bg-brand-300 dark:hover:bg-brand-500 dark:disabled:bg-brand-900 dark:disabled:text-brand-300"
+      ? "bg-brand-400 text-slate-950 shadow-[0_0_0_1px_rgb(47_188_174/0.4),0_8px_20px_-8px_rgb(47_188_174/0.55)] hover:bg-brand-300 disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none"
       : "border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800";
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 active:scale-[0.97] disabled:cursor-not-allowed disabled:active:scale-100 motion-reduce:active:scale-100 ${styles}`}
+      className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-300 active:scale-[0.97] disabled:cursor-not-allowed disabled:active:scale-100 motion-reduce:active:scale-100 ${styles}`}
     >
       {children}
     </button>

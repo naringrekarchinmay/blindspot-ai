@@ -25,7 +25,7 @@ export function StepTimeline({ statuses }: { statuses: StepStatus[] }) {
                 <motion.span
                   className={`relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors duration-300 ${
                     s === "done"
-                      ? "bg-brand-600 text-white"
+                      ? "bg-brand-400 text-slate-950"
                       : s === "active"
                         ? "border-2 border-brand-500 bg-white text-brand-600 dark:bg-slate-900 dark:text-brand-300"
                         : "border border-slate-300 bg-white text-slate-400 dark:border-slate-700 dark:bg-slate-900"

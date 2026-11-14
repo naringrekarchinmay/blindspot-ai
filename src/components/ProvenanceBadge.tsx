@@ -8,7 +8,7 @@ type BadgeKind = "live" | "captured" | "fixture";
 const styles: Record<BadgeKind, string> = {
   live: "bg-emerald-600 text-white",
   captured: "bg-amber-500 text-slate-950",
-  fixture: "bg-slate-500 text-white",
+  fixture: "bg-slate-600 text-slate-50",
 };
 
 const labels: Record<BadgeKind, string> = {

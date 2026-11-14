@@ -87,7 +87,7 @@ export function AssessmentCard({
                   aria-checked={selected}
                   disabled={locked}
                   onClick={() => onSelect(b.id)}
-                  className={`w-full cursor-pointer rounded-xl border p-3.5 text-left transition duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 enabled:hover:-translate-y-px enabled:hover:shadow-sm disabled:cursor-default motion-reduce:hover:translate-y-0 ${
+                  className={`w-full cursor-pointer rounded-xl border p-3.5 text-left transition duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-300 enabled:hover:-translate-y-px enabled:hover:shadow-sm disabled:cursor-default motion-reduce:hover:translate-y-0 ${
                     selected
                       ? "border-brand-500 bg-brand-50 ring-1 ring-brand-500 dark:bg-brand-950/40"
                       : "border-slate-200 hover:border-slate-300 dark:border-slate-800 dark:hover:border-slate-700"

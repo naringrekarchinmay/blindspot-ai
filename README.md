@@ -4,7 +4,11 @@ An AI decision-research agent that recognizes what it does *not* know. It finds 
 
 Built for *Hack the Unreachable* (Flashpoint.AI), Self-Improving AI track, by Chinmay Naringrekar and Dolly Lokhandwala.
 
-![The four-step flow on the café demo](docs/screenshots/flow.png)
+![BlindSpot AI after a full run of the café demo: all four steps complete](docs/screenshots/flow.jpg)
+
+| Research: the captured Flashpoint synthetic run | Reassess: before vs after |
+|---|---|
+| ![Research findings with the CAPTURED badge, the AI-personas notice and counts per option](docs/screenshots/research.jpg) | ![Reassessment: Neighborhood A before and after, unchanged, confidence stays low](docs/screenshots/reassess.jpg) |
 
 ## The problem
 
