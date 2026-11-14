@@ -29,6 +29,11 @@ export type CapturedStudy = {
   blindSpot: RegExp[];
 };
 
+// A blind spot about cost, rules, rivals or safety is a different question from the one a study
+// asked, even if it also mentions customers or visits, so it never gets that study's plan.
+const OFF_TOPIC =
+  /\b(rent|lease|zoning|licen[cs]|permit|competit|rival|saturat|safety|safe\b|crime|cost|price of space|existing (venues|caf|stores|shops|businesses|options)|already (capture|serve|satisf|meet))/i;
+
 export const CAPTURED_STUDIES: CapturedStudy[] = [
   {
     id: "cafe",
@@ -37,7 +42,10 @@ export const CAPTURED_STUDIES: CapturedStudy[] = [
     options: ["Neighborhood A", "Neighborhood B"],
     decision: /caf[eé]/i,
     // Late-night demand: would people actually come, and how often.
-    blindSpot: [/visit|demand|patron|want a caf|would (actually )?(go|come|use)|how many (people|residents)|how often/i],
+    // Claude words this differently every run ("foot traffic", "show up", "attract customers"…).
+    blindSpot: [
+      /visit|demand|patron|want a caf|foot ?traffic|footfall|attract|show up|stop by|frequent|would (people |residents |customers )?(actually )?(go|come|use)|how many (people|residents|customers|visitors)|how often/i,
+    ],
   },
   {
     id: "football",
@@ -46,7 +54,7 @@ export const CAPTURED_STUDIES: CapturedStudy[] = [
     options: ["Upper East Side", "Lower East Side"],
     decision: /football|soccer/i,
     // In-store purchase intent: a buying word and a channel word.
-    blindSpot: [/\b(buy|purchas|shop)/i, /online|in-store|in person|physical/i],
+    blindSpot: [/\b(buy|purchas|shop|spend)/i, /online|in-store|in person|physical|brick|e-?commerce|walk[- ]in|store/i],
   },
 ];
 
@@ -65,6 +73,7 @@ export function studyForScenario(
     (s) =>
       s.options.map(normOption).sort().join("|") === opts &&
       s.decision.test(decision) &&
+      !OFF_TOPIC.test(text) &&
       s.blindSpot.every((re) => re.test(text)),
   );
 }
