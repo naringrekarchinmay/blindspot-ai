@@ -26,5 +26,18 @@ export async function POST(req: Request) {
     ]);
     if (plan && captured && samePlanQuestions(body.data.plan, plan)) return NextResponse.json(captured);
   }
-  return NextResponse.json(await loadFixture("research.json", ResearchResult));
+  return NextResponse.json(await demoFixtureFor(body.data.plan));
+}
+
+// The topic-neutral demo fixture, with one explicit "no data" finding per plan question,
+// so the UI can render any plan without showing numbers or quotes nobody gave.
+async function demoFixtureFor(plan: ResearchPlan): Promise<ResearchResult> {
+  const fixture = await loadFixture("research.json", ResearchResult);
+  return {
+    ...fixture,
+    findings: plan.questions.map((q) => ({
+      questionId: q.id,
+      summary: "[Demo fixture] No research was run for this question; there is no data.",
+    })),
+  };
 }

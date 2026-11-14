@@ -1,11 +1,10 @@
 {
-  "_note": "DEMO FIXTURE: invented placeholder numbers for UI development only. Never present as research.",
+  "_note": "DEMO FIXTURE: topic-neutral placeholder. /api/research fills one finding per question of the requested plan. No research was run and nothing here is data.",
   "status": "completed",
   "provenance": { "mode": "fixture", "source": "demo_fixture", "platform": "none", "n": 0 },
-  "findings": [
-    { "questionId": "q2", "summary": "[Fixture placeholder] Distribution of weekly late-night outings.", "distribution": { "Never": 0, "Less than once": 0, "1-2 times": 0, "3+ times": 0 } },
-    { "questionId": "q3", "summary": "[Fixture placeholder] Likelihood to visit a 2 AM café.", "distribution": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0 } },
-    { "questionId": "q5", "summary": "[Fixture placeholder] Open-text themes.", "quotes": ["[Fixture placeholder quote]"] }
-  ],
-  "caveats": ["This is a demo fixture with placeholder values, not research data. No people or personas were surveyed."]
+  "findings": [],
+  "caveats": [
+    "This is a demo fixture, not research data. No people or AI personas were surveyed.",
+    "Every question in the plan is still unanswered, so the blind spot remains open."
+  ]
 }
