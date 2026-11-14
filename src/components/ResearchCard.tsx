@@ -4,17 +4,30 @@ import { motion } from "motion/react";
 import { EASE_OUT, Stagger, StaggerItem } from "./motion";
 import type { Finding, ResearchPlan, ResearchResult } from "@/lib/types";
 import { ProvenanceBadge, SyntheticNotice } from "./ProvenanceBadge";
+import { SearchOffIcon } from "./icons";
 import { BulletList, Card, Label } from "./ui";
 
-function DistributionBars({ distribution, unit }: { distribution: Record<string, number>; unit: string }) {
+function DistributionBars({
+  distribution,
+  unit,
+}: {
+  distribution: Record<string, number>;
+  unit: string;
+}) {
   const entries = Object.entries(distribution);
   const total = entries.reduce((sum, [, v]) => sum + v, 0);
   const max = Math.max(1, ...entries.map(([, v]) => v));
   return (
     <div className="space-y-1.5">
       {entries.map(([label, count], i) => (
-        <div key={label} className="grid grid-cols-[minmax(0,7rem)_1fr_auto] items-center gap-2 text-xs sm:grid-cols-[minmax(0,10rem)_1fr_auto]">
-          <span className="truncate text-slate-600 dark:text-slate-400" title={label}>
+        <div
+          key={label}
+          className="grid grid-cols-[minmax(0,7rem)_1fr_auto] items-center gap-2 text-xs sm:grid-cols-[minmax(0,10rem)_1fr_auto]"
+        >
+          <span
+            className="truncate text-slate-600 dark:text-slate-400"
+            title={label}
+          >
             {label}
           </span>
           <div className="h-4 overflow-hidden rounded bg-slate-100 dark:bg-slate-800">
@@ -22,7 +35,11 @@ function DistributionBars({ distribution, unit }: { distribution: Record<string,
               className="h-4 origin-left rounded bg-brand-500"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: count / max }}
-              transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.15 + i * 0.06 }}
+              transition={{
+                duration: 0.6,
+                ease: EASE_OUT,
+                delay: 0.15 + i * 0.06,
+              }}
             />
           </div>
           <span className="w-16 text-right tabular-nums text-slate-700 dark:text-slate-300">
@@ -31,7 +48,9 @@ function DistributionBars({ distribution, unit }: { distribution: Record<string,
           </span>
         </div>
       ))}
-      <div className="text-right text-[10px] text-slate-400">counts of {unit}</div>
+      <div className="text-right text-[10px] text-slate-400">
+        counts of {unit}
+      </div>
     </div>
   );
 }
@@ -53,7 +72,9 @@ function FindingBlock({
         <span className="mr-2 text-slate-400">Q{index + 1}</span>
         {questionText ?? finding.questionId}
       </div>
-      <p className="mb-3 text-sm text-slate-700 dark:text-slate-300">{finding.summary}</p>
+      <p className="mb-3 text-sm text-slate-700 dark:text-slate-300">
+        {finding.summary}
+      </p>
       {finding.distribution && Object.keys(finding.distribution).length > 0 && (
         <DistributionBars distribution={finding.distribution} unit={unit} />
       )}
@@ -76,40 +97,109 @@ function FindingBlock({
   );
 }
 
-export function ResearchCard({ result, plan }: { result: ResearchResult; plan: ResearchPlan }) {
+export function ResearchCard({
+  result,
+  plan,
+}: {
+  result: ResearchResult;
+  plan: ResearchPlan;
+}) {
   const synthetic = result.provenance.source === "flashpoint_synthetic";
   const unit = synthetic ? "AI personas" : "respondents";
   const questionIndex = new Map(plan.questions.map((q, i) => [q.id, i]));
   const findings = [...result.findings].sort(
-    (a, b) => (questionIndex.get(a.questionId) ?? 99) - (questionIndex.get(b.questionId) ?? 99),
+    (a, b) =>
+      (questionIndex.get(a.questionId) ?? 99) -
+      (questionIndex.get(b.questionId) ?? 99),
   );
 
+  // A demo-fixture result carries no numbers or quotes: show one clear explanation instead of
+  // repeating "no data" under every question.
+  const noData =
+    result.provenance.mode === "fixture" &&
+    result.findings.every(
+      (f) => !f.distribution && !(f.quotes && f.quotes.length),
+    );
+
   return (
-    <Card step={3} title="Research findings" aside={<ProvenanceBadge provenance={result.provenance} />}>
+    <Card
+      step={3}
+      title="Research findings"
+      aside={<ProvenanceBadge provenance={result.provenance} />}
+    >
       <div className="space-y-4">
         {synthetic && <SyntheticNotice />}
         {result.status !== "completed" && (
-          <p className="text-sm text-amber-700 dark:text-amber-300">Research status: {result.status}</p>
+          <p className="text-sm text-amber-700 dark:text-amber-300">
+            Research status: {result.status}
+          </p>
         )}
-        <Stagger className="space-y-3">
-          {findings.map((f, i) => {
-            const qi = questionIndex.get(f.questionId);
-            return (
-              <FindingBlock
-                key={`${f.questionId}-${i}`}
-                finding={f}
-                index={qi ?? i}
-                questionText={qi !== undefined ? plan.questions[qi].text : undefined}
-                unit={unit}
-              />
-            );
-          })}
-        </Stagger>
+        {noData ? (
+          <NoResearchPanel plan={plan} />
+        ) : (
+          <Stagger className="space-y-3">
+            {findings.map((f, i) => {
+              const qi = questionIndex.get(f.questionId);
+              return (
+                <FindingBlock
+                  key={`${f.questionId}-${i}`}
+                  finding={f}
+                  index={qi ?? i}
+                  questionText={
+                    qi !== undefined ? plan.questions[qi].text : undefined
+                  }
+                  unit={unit}
+                />
+              );
+            })}
+          </Stagger>
+        )}
         <div>
           <Label>Caveats</Label>
           <BulletList items={result.caveats} />
         </div>
       </div>
     </Card>
+  );
+}
+
+function NoResearchPanel({ plan }: { plan: ResearchPlan }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-3 rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-sm">
+        <SearchOffIcon size={22} className="mt-0.5 shrink-0 text-slate-400" />
+        <div className="space-y-1.5">
+          <p className="font-bold text-slate-100">
+            No study has been run for this plan, so there are no findings.
+          </p>
+          <p className="text-slate-300">
+            Nothing below is data. In this build, only the café demo
+            (Neighborhood A vs B) has a captured Flashpoint study behind it.
+            Running a new Flashpoint study takes about 3 minutes and isn&apos;t
+            wired into the app yet, so the reassessment won&apos;t gain any new
+            evidence.
+          </p>
+        </div>
+      </div>
+      <div>
+        <Label>Planned questions, not yet researched</Label>
+        <Stagger as="ol" className="space-y-2">
+          {plan.questions.map((q, i) => (
+            <StaggerItem
+              key={q.id}
+              className="flex items-start justify-between gap-3 rounded-lg border border-dashed border-slate-700 p-3 text-sm"
+            >
+              <span className="text-slate-300">
+                <span className="mr-2 text-slate-500">Q{i + 1}</span>
+                {q.text}
+              </span>
+              <span className="shrink-0 rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-slate-400 uppercase">
+                No data
+              </span>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </div>
+    </div>
   );
 }
