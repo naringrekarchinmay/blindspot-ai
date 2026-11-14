@@ -77,6 +77,7 @@ Two response headers mark steps that came from saved data instead of a live call
 |---|---|---|
 | `x-blindspot-source: captured-plan` | `/api/research-plan` | The saved plan the Flashpoint survey was built from was returned, instead of a newly written one |
 | `x-blindspot-source: captured-reassess` | `/api/reassess` | Claude failed, so the saved reassessment for the captured run was returned |
+| `x-blindspot-source: fixture` | all four routes | `DEMO_MODE=fixtures`: the response is a demo fixture; badge the step DEMO FIXTURE |
 
 ## 5. The demo scenario
 

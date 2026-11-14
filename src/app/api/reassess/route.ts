@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Reassessment, ReassessRequest, type ResearchResult } from "@/lib/types";
 import { isDemoMode, loadFixture, loadOptionalFixture } from "@/lib/fixtures";
-import { handleError, parseBody } from "@/lib/http";
+import { handleError, parseBody, sourcedJson } from "@/lib/http";
 import { reassess } from "@/lib/claude";
 
 export const maxDuration = 120;
@@ -24,14 +24,14 @@ export async function POST(req: Request) {
   if (!body.ok) return body.res;
   const { assessment, plan, result } = body.data;
   try {
-    if (isDemoMode()) return NextResponse.json(await loadFixture("reassess.json", Reassessment));
+    if (isDemoMode()) return sourcedJson(await loadFixture("reassess.json", Reassessment), "fixture");
     return NextResponse.json(await reassess(assessment, plan, result));
   } catch (err) {
     if (isCapturedRun(result)) {
       const captured = await loadOptionalFixture(CAPTURED_REASSESS, Reassessment);
       if (captured) {
         console.warn("reassess: live Claude call failed, serving captured reassessment");
-        return NextResponse.json(captured, { headers: { "x-blindspot-source": "captured-reassess" } });
+        return sourcedJson(captured, "captured-reassess");
       }
     }
     return handleError(err);
