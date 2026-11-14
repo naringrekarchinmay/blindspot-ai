@@ -6,7 +6,7 @@ Deck: the "BlindSpot AI pitch" Slides artifact (speaker notes on every slide). D
 
 - Check the Anthropic key has credit: analyze and reassess are live Claude calls. If it doesn't, the café demo still works from saved outputs (badged CAPTURED); use it instead and say so.
 - Run the production build (`npm run build && npm run start`), open the app on the empty form, and have the deck on slide 1 in another window.
-- Only claim live Flashpoint "works end to end" if a live run has completed on this machine. Otherwise say it's wired in and the first runs got through survey, panel and analysis.
+- A full live Flashpoint run completed in the app on 14 Nov (Upper East Side vs Lower East Side, shown on slide 8), so "it works end to end" is accurate.
 
 ## Script (3:00)
 
@@ -14,16 +14,17 @@ Deck: the "BlindSpot AI pitch" Slides artifact (speaker notes on every slide). D
 |---|---|---|
 | 0:00 | 1 Cover | "We're BlindSpot AI. We built an AI that knows what it doesn't know." |
 | 0:10 | 2 Problem | "Ask any AI whether to open an Indian restaurant in SoHo or the Upper East Side and you get a confident answer. What actually decides it is how often people near each spot would eat there and what they'd pay. That isn't on the internet. The AI doesn't know that it doesn't know." |
-| 0:30 | 3 How it works | "Four steps: frame the decision and its assumptions, rank what it doesn't know, run a neutral survey on Flashpoint, reassess honestly." |
-| 0:45 | 4 Demo | Switch to the app. Question: *Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?* Options `SoHo`, `Upper East Side`. Analyze (talk over the ~10s): "Leans Upper East Side, LOW confidence, and says why." Point at the top blind spot. Research this blind spot → Run research: "A real Flashpoint study of 30 AI personas, built from exactly this plan, badged CAPTURED." Reassess. |
+| 0:30 | 3 How it learns | "This is the self-improving loop. It frames the decision and its assumptions, ranks what it doesn't know, asks a Flashpoint panel about the biggest gap, then updates its own assumptions and confidence." |
+| 0:45 | 4 Demo | Switch to the app. Question: *Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?* Options `SoHo`, `Upper East Side`. Analyze (talk over the ~10s): "Leans Upper East Side, LOW confidence, and says why." Point at the top blind spot and say why it was picked: "Demand and price decide whether revenue can cover rent in either spot. It's ranked high impact, and a survey can answer it." Research this blind spot → Run research: "A real Flashpoint study of 30 AI personas, built from exactly this plan, badged CAPTURED." Reassess. |
 | 1:50 | 6 Reassessment | "It kept Upper East Side, kept confidence low, and listed the SoHo signals as evidence against. Thirty synthetic personas don't settle a lease. 'Insufficient evidence, no change' is a valid answer." (Slide 5 is the fallback if the demo stalls.) |
-| 2:10 | 7 Trust | "Every result says if it's live, captured or a placeholder. Synthetic personas are always called synthetic. It never invents a number." |
-| 2:30 | 8 New today | "Since this afternoon any question can run live: the app builds the survey on Flashpoint, runs a synthetic panel and turns Flashpoint's analysis into findings, with a progress view because it takes minutes." |
-| 2:45 | 9 Close | "It finds what it doesn't know, goes and asks, and tells you honestly whether the answer changes anything. Thank you." |
+| 2:10 | 7 Trust (to 2:25) | "Every result says if it's live, captured or a placeholder. Synthetic personas are always called synthetic. It never invents a number." |
+| 2:25 | 8 New today | "And as of this afternoon, any question can run live: the app builds the survey on Flashpoint, runs a synthetic panel and turns Flashpoint's analysis into findings. This one ran live, end to end, today." Point at the LIVE badge. |
+| 2:35 | 9 Beyond restaurants | "A restaurant is just our example. The same loop works for a city, a product team, an investor: any decision that hinges on what people think. Flashpoint runs the research, Claude does the reasoning, and BlindSpot is the decision layer on top. So it's a product we can build now, with no panel of our own." |
+| 2:50 | 10 Close | "It finds what it doesn't know, goes and asks, and tells you honestly whether the answer changes anything. Thank you." |
 
 ## Q&A (3:00): short answers
 
-Keep each answer under 30 seconds. Backup slides 10 (architecture) and 11 (the four studies) are after the close.
+Keep each answer under 30 seconds. Backup slides 11 (architecture) and 12 (the four studies) are after the close.
 
 **Is this real data?**
 It's real Flashpoint output from a synthetic panel: 30 AI personas, not real people. We label it that way on every screen and treat it as directional. Each study is saved with its Flashpoint survey and panel IDs.

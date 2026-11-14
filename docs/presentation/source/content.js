@@ -18,10 +18,10 @@ module.exports.SLIDES = [
     do: [],
   },
   {
-    title: "How it works",
+    title: "How it learns",
     time: "0:30–0:45",
     say: [
-      "Four steps. It frames the decision and lists every assumption it’s leaning on. It ranks what it doesn’t know. It turns the top blind spot into a neutral survey and runs it on Flashpoint. Then it reassesses, honestly.",
+      "This is the self-improving loop. It frames the decision and its assumptions, ranks what it doesn’t know, asks a Flashpoint panel about the biggest gap, then updates its own assumptions and confidence.",
     ],
     do: ["Keep this quick: the demo shows each step."],
   },
@@ -32,13 +32,14 @@ module.exports.SLIDES = [
       "Here’s the real app. The question: is it a good idea to open an Indian restaurant, and should it be in SoHo or the Upper East Side?",
       "(While Analyze loads) It leans Upper East Side, with low confidence, and it tells us why.",
       "These are the blind spots it found, ranked. The top one: how often people eat Indian food here, and what they’d pay.",
+      "And it says why it picked that one: demand and price decide whether revenue can cover rent in either spot. It’s ranked high impact, and a survey can actually answer it.",
       "It turns that into a short, neutral survey.",
       "And this is a real Flashpoint study of 30 AI personas, built from exactly this plan. That’s what the CAPTURED badge means.",
     ],
     do: [
       "Switch to the app: production build, empty form.",
       "Paste the question “Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?” with options “SoHo” and “Upper East Side”.",
-      "Click Analyze decision (about 10 seconds; talk over it). Point at the ranked blind spots.",
+      "Click Analyze decision (about 10 seconds; talk over it). Point at the ranked blind spots, then at the top one’s “why it matters” line and its high-impact tag.",
       "Click Research this blind spot, then Run research. Point at the CAPTURED badge and the AI-personas notice.",
       "Click Reassess the decision (about 10 seconds), then return to the deck at the reassessment slide.",
       "If anything stalls, come back to the deck: the next two slides are this same run.",
@@ -64,7 +65,7 @@ module.exports.SLIDES = [
   },
   {
     title: "Why you can trust it",
-    time: "2:10–2:30",
+    time: "2:10–2:25",
     say: [
       "Three rules we built in. Every result says whether it’s live, captured or a placeholder. Synthetic personas are always called synthetic. And it never invents a number: if no study was run, it says there’s no data.",
     ],
@@ -72,18 +73,26 @@ module.exports.SLIDES = [
   },
   {
     title: "New today: live Flashpoint",
-    time: "2:30–2:45",
+    time: "2:25–2:35",
     say: [
-      "Until this afternoon, only saved studies had data behind them. Now any question can run live: the app builds the survey on Flashpoint, runs a synthetic panel, and turns Flashpoint’s analysis into findings, with a progress view because it takes a few minutes.",
+      "And as of this afternoon, any question can run live: the app builds the survey on Flashpoint, runs a synthetic panel, and turns Flashpoint’s analysis into findings. This one ran live, end to end, today.",
     ],
     do: [
-      "Only say “it works end to end” if a full live run has completed on the presenting machine.",
-      "If not, say instead: “It’s wired in, and our first runs got through the survey, the panel and the analysis.”",
+      "Point at the LIVE badge on the screenshot: a full live run (Upper East Side vs Lower East Side) completed in the app on 14 Nov.",
     ],
   },
   {
+    title: "Beyond restaurants",
+    time: "2:35–2:50",
+    say: [
+      "A restaurant is just our example. The same loop works for a city, a product team, an investor: any decision that hinges on what people think.",
+      "Flashpoint runs the research, Claude does the reasoning, and BlindSpot is the decision layer on top. So it’s a product we can build now, with no panel of our own.",
+    ],
+    do: ["The second line is the one to land: we sit on top of Flashpoint, not against it."],
+  },
+  {
     title: "Close",
-    time: "2:45–3:00",
+    time: "2:50–3:00",
     say: [
       "BlindSpot AI finds what it doesn’t know, goes and asks, and tells you honestly whether the answer changes anything.",
       "Thank you. We’re happy to take questions.",
@@ -112,7 +121,7 @@ module.exports.CHECKLIST = [
   "Check the Anthropic key has credit: Analyze and Reassess are live Claude calls. If it doesn’t, use the café demo, which falls back to saved outputs badged CAPTURED, and say so.",
   "Run the production build (npm run build && npm run start) and open the app on the empty form.",
   "Have the deck open on slide 1 in a second window.",
-  "Only claim live Flashpoint “works end to end” if a live run has completed on this machine.",
+  "A full live Flashpoint run completed in the app on 14 Nov (slide 8 shows it), so “it works end to end” is accurate.",
 ];
 
 module.exports.QA = [

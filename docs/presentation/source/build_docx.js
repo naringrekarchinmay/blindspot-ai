@@ -42,7 +42,7 @@ const body = [
 
   new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("Timing at a glance")] }),
   timing,
-  p("Slide 5 is a fallback for the demo, and slides 10–11 are for Q&A only.", { spacing: { before: 120, after: 120 }, run: { color: MUTED, size: 20 } }),
+  p("Slide 5 is a fallback for the demo, and slides 11–12 are for Q&A only.", { spacing: { before: 120, after: 120 }, run: { color: MUTED, size: 20 } }),
 
   new Paragraph({ children: [new PageBreak()] }),
   new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("Script, slide by slide")] }),
@@ -56,7 +56,7 @@ const body = [
 
   new Paragraph({ children: [new PageBreak()] }),
   new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("Q&A: short answers (3 minutes)")] }),
-  p("Keep each answer under 30 seconds. Backup slides 10 (architecture) and 11 (the four studies) follow the closing slide.", { run: { color: MUTED } }),
+  p("Keep each answer under 30 seconds. Backup slides 11 (architecture) and 12 (the four studies) follow the closing slide.", { run: { color: MUTED } }),
   ...QA.flatMap(([q, a]) => [
     new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun(q)] }),
     p(a),

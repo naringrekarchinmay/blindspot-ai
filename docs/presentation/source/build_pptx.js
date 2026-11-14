@@ -1,4 +1,4 @@
-// Builds BlindSpot-AI-pitch.pptx: 11 slides, script in the speaker notes.
+// Builds BlindSpot-AI-pitch.pptx: 12 slides, script in the speaker notes.
 const path = require("path");
 const pptxgen = require("pptxgenjs");
 const { SLIDES, notesFor } = require("./content");
@@ -90,21 +90,25 @@ pres.addSection({ title: "The problem and the idea" });
 // 3 How it works
 {
   const s = pres.addSlide({ masterName: "CONTENT_DARK", sectionTitle: "The problem and the idea" });
-  head(s, "How it works", "Four steps, every one shown to the user");
+  head(s, "How it learns", "A self-improving loop, every step on screen");
   const steps = [
     ["1 · ANALYZE", "Frame it", "Criteria, a provisional pick, and every assumption, tagged as assumption or public info."],
     ["2 · BLIND SPOT", "Find the gap", "Rank the unknowns by impact on the decision and whether a survey could answer them."],
     ["3 · RESEARCH", "Go ask", "A neutral survey run on a Flashpoint synthetic panel of 30 AI personas."],
-    ["4 · REASSESS", "Be honest", "Before vs after, evidence for and against, and whether anything should change."],
+    ["4 · REASSESS", "Update itself", "Before vs after: which assumptions moved, evidence for and against, new confidence."],
   ];
   const gap = 0.3, cw = (W - 3 * gap) / 4;
   steps.forEach(([n, t, d], i) => {
     const x = M + i * (cw + gap);
-    card(s, x, 2.4, cw, 3.6, i === 2, `Step ${i + 1} card`);
-    s.addText(n, tb({ x: x + 0.3, y: 2.7, w: cw - 0.6, h: 0.35, fontSize: 13, bold: true, charSpacing: 2, color: C.accent1 }));
-    s.addText(t, tb({ x: x + 0.3, y: 3.15, w: cw - 0.6, h: 0.6, fontSize: 24, bold: true, color: C.background1, fontFace: "Cambria" }));
-    s.addText(d, tb({ x: x + 0.3, y: 3.9, w: cw - 0.6, h: 1.9, fontSize: 15, color: C.background2 }));
+    card(s, x, 2.3, cw, 3.25, i === 2, `Step ${i + 1} card`);
+    s.addText(n, tb({ x: x + 0.3, y: 2.6, w: cw - 0.6, h: 0.35, fontSize: 13, bold: true, charSpacing: 2, color: C.accent1 }));
+    s.addText(t, tb({ x: x + 0.3, y: 3.05, w: cw - 0.6, h: 0.6, fontSize: 24, bold: true, color: C.background1, fontFace: "Cambria" }));
+    s.addText(d, tb({ x: x + 0.3, y: 3.8, w: cw - 0.6, h: 1.6, fontSize: 15, color: C.background2 }));
   });
+  s.addText([
+    { text: "What it knew  →  what it was missing  →  what it asked  →  " },
+    { text: "what it now believes, and how sure", options: { bold: true, color: C.background1 } },
+  ], tb({ x: M, y: 5.9, w: W, h: 0.5, fontSize: 18, color: C.accent1 }));
   notes(s, 2);
 }
 
@@ -131,13 +135,16 @@ pres.addSection({ title: "Demo and evidence" });
     ["6 of 15", "vs 3 of 14", "are dissatisfied with the Indian options near them: SoHo vs Upper East Side"],
     ["6 of 14", "vs 2 of 15", "expect to pay $35 or more for a main: Upper East Side vs SoHo"],
   ];
-  const gap = 0.4, cw = (W - 2 * gap) / 3;
+  // 1354x555 crop of the app's Q2 chart from this run -> 7.0 x 2.87
+  s.addImage({ path: IMG("research-q2.png"), x: M, y: 2.25, w: 7.0, h: 2.87, altText: "The app's Q2 chart: how often the 30 AI personas eat Indian food from a restaurant", objectName: "Q2 chart screenshot" });
+  s.addText("The app’s own chart for Q2, from this captured run: all 30 personas.", tb({ x: M, y: 5.25, w: 7.0, h: 0.4, fontSize: 13, color: HEX.muted }));
+  const sx = M + 7.35, sw = W - 7.35;
   stats.forEach(([big, vs, label], i) => {
-    const x = M + i * (cw + gap);
-    card(s, x, 2.35, cw, 3.35, false, `Stat ${i + 1}`);
-    s.addText(big, tb({ x: x + 0.35, y: 2.65, w: cw - 0.7, h: 0.95, fontSize: 48, bold: true, color: C.accent1, fontFace: "Cambria" }));
-    s.addText(vs, tb({ x: x + 0.35, y: 3.65, w: cw - 0.7, h: 0.45, fontSize: 20, color: C.background1 }));
-    s.addText(label, tb({ x: x + 0.35, y: 4.25, w: cw - 0.7, h: 1.3, fontSize: 15, color: C.background2 }));
+    const y = 2.25 + i * 1.18;
+    card(s, sx, y, sw, 1.05, false, `Stat ${i + 1}`);
+    s.addText([{ text: big, options: { color: C.accent1, bold: true, fontFace: "Cambria", fontSize: 24 } }, { text: "  " + vs, options: { color: C.background1, fontSize: 15 } }],
+      tb({ x: sx + 0.25, y: y + 0.1, w: sw - 0.5, h: 0.45 }));
+    s.addText(label, tb({ x: sx + 0.25, y: y + 0.55, w: sw - 0.5, h: 0.45, fontSize: 12, color: C.background2 }));
   });
   s.addText("Flashpoint synthetic panel, n=30 AI personas, not real people · survey 10728c5d · captured 14 Nov 2026 · directional only",
     tb({ x: M, y: 6.25, w: W - 0.8, h: 0.4, fontSize: 12, color: HEX.muted }));
@@ -198,25 +205,63 @@ pres.addSection({ title: "Trust, what’s new, close" });
     ["Run panel", "Up to 30 AI personas take the survey"],
     ["Analyze", "Flashpoint’s counts and quotes become findings"],
   ];
-  const aw = 0.45, nw = (W - 3 * aw) / 4;
+  const lw = 5.9;
   nodes.forEach(([t, d], i) => {
-    const x = M + i * (nw + aw);
-    card(s, x, 2.4, nw, 2.2, false, `${t} stage`);
-    s.addShape(pres.shapes.OVAL, { x: x + 0.3, y: 2.65, w: 0.45, h: 0.45, fill: { color: HEX.teal }, objectName: `${t} number` });
-    s.addText(String(i + 1), tb({ x: x + 0.3, y: 2.65, w: 0.45, h: 0.45, fontSize: 14, bold: true, color: HEX.ink, align: "center", valign: "middle" }));
-    s.addText(t, tb({ x: x + 0.3, y: 3.25, w: nw - 0.6, h: 0.45, fontSize: 20, bold: true, color: C.background1 }));
-    s.addText(d, tb({ x: x + 0.3, y: 3.75, w: nw - 0.6, h: 0.8, fontSize: 14, color: C.background2 }));
-    if (i < 3) s.addShape(pres.shapes.RIGHT_ARROW, { x: x + nw + 0.08, y: 3.35, w: aw - 0.16, h: 0.3, fill: { color: HEX.teal }, line: { color: HEX.teal }, objectName: `Arrow ${i + 1}` });
+    const y = 2.2 + i * 0.95;
+    card(s, M, y, lw, 0.8, false, `${t} stage`);
+    s.addShape(pres.shapes.OVAL, { x: M + 0.2, y: y + 0.18, w: 0.44, h: 0.44, fill: { color: HEX.teal }, objectName: `${t} number` });
+    s.addText(String(i + 1), tb({ x: M + 0.2, y: y + 0.18, w: 0.44, h: 0.44, fontSize: 14, bold: true, color: HEX.ink, align: "center", valign: "middle" }));
+    s.addText(t, tb({ x: M + 0.85, y, w: 1.7, h: 0.8, fontSize: 18, bold: true, color: C.background1, valign: "middle" }));
+    s.addText(d, tb({ x: M + 2.55, y, w: lw - 2.75, h: 0.8, fontSize: 14, color: C.background2, valign: "middle" }));
   });
   s.addText([
-    { text: "A run takes a few minutes, so the app shows each stage as it goes and badges the result " },
+    { text: "A run takes a few minutes; the app shows each stage and badges the result " },
     { text: "LIVE", options: { bold: true, color: C.background1 } },
     { text: "." },
-  ], tb({ x: M, y: 5.1, w: W, h: 0.6, fontSize: 18, color: C.background2 }));
+  ], tb({ x: M, y: 6.05, w: lw, h: 0.6, fontSize: 15, color: C.background2 }));
+  // 920x792 crop of a live run from the app (UES vs LES, 14 Nov) -> 4.76 x 4.1
+  const ix = 13.333 - M - 4.76;
+  s.addImage({ path: IMG("live-run.png"), x: ix, y: 2.2, w: 4.76, h: 4.1, altText: "A live run from the app: research findings badged LIVE, Flashpoint synthetic panel, n=30", objectName: "Live run screenshot" });
+  s.addText("Run live from the app today: Indian restaurant, Upper East Side vs Lower East Side · 30 AI personas, directional",
+    tb({ x: ix, y: 6.4, w: 4.76, h: 0.5, fontSize: 11, color: HEX.muted }));
   notes(s, 7);
 }
 
-// 9 Close
+// 9 Beyond restaurants: impact and how it fits with Flashpoint
+{
+  const s = pres.addSlide({ masterName: "CONTENT_DARK", sectionTitle: "Trust, what’s new, close" });
+  head(s, "Beyond restaurants", "Any decision that hinges on what people think");
+  const uses = [
+    ["A city", "Which service would residents actually use?"],
+    ["A product team", "Do customers want this before we build it?"],
+    ["An investor", "How do buyers feel about this category?"],
+    ["A company", "Where will staff push back on this change?"],
+  ];
+  const half = (W - 0.3) / 2;
+  uses.forEach(([who, q], i) => {
+    const x = M + (i % 2) * (half + 0.3), y = 2.2 + Math.floor(i / 2) * 1.2;
+    card(s, x, y, half, 1.0, false, `${who} use case`);
+    s.addText(who, tb({ x: x + 0.3, y, w: 2.3, h: 1.0, fontSize: 19, bold: true, color: C.background1, fontFace: "Cambria", valign: "middle" }));
+    s.addText(q, tb({ x: x + 2.6, y, w: half - 2.9, h: 1.0, fontSize: 16, color: C.background2, valign: "middle" }));
+  });
+  const layers = [
+    ["FLASHPOINT", "Runs the research"],
+    ["CLAUDE", "Does the reasoning"],
+    ["BLINDSPOT", "The decision layer: which question is worth asking, and what the answer changes"],
+  ];
+  const lw = [2.9, 2.9, W - 6.4];
+  layers.reduce((x, [k, d], i) => {
+    card(s, x, 4.75, lw[i], 1.45, i === 2, `${k} layer`);
+    s.addText(k, tb({ x: x + 0.3, y: 4.95, w: lw[i] - 0.6, h: 0.35, fontSize: 13, bold: true, charSpacing: 2, color: C.accent1 }));
+    s.addText(d, tb({ x: x + 0.3, y: 5.35, w: lw[i] - 0.6, h: 0.75, fontSize: 16, color: C.background1 }));
+    return x + lw[i] + 0.3;
+  }, M);
+  s.addText("No panel of our own to build: it makes each Flashpoint study answer the question the decision hinges on.",
+    tb({ x: M, y: 6.4, w: W - 0.8, h: 0.4, fontSize: 13, color: HEX.muted }));
+  notes(s, 8);
+}
+
+// 10 Close
 {
   const s = pres.addSlide({ masterName: "ACCENT", sectionTitle: "Trust, what’s new, close" });
   s.addText("BLINDSPOT AI", tb({ x: M, y: 0.7, w: W, h: 0.4, fontSize: 14, bold: true, charSpacing: 3, color: HEX.deep }));
@@ -224,10 +269,10 @@ pres.addSection({ title: "Trust, what’s new, close" });
     tb({ x: M, y: 2.2, w: 10.5, h: 2.6, fontSize: 40, bold: true, color: HEX.ink, fontFace: "Cambria" }));
   s.addText("github.com/naringrekarchinmay/blindspot-ai · Thank you, questions welcome",
     tb({ x: M, y: 6.4, w: W, h: 0.4, fontSize: 16, color: HEX.deep }));
-  notes(s, 8);
+  notes(s, 9);
 }
 
-// 10-11 Backup
+// 11-12 Backup
 pres.addSection({ title: "Backup for Q&A" });
 function table(slide, rows, colW, y, name) {
   const header = rows[0].map((t) => ({ text: t, options: { bold: true, color: HEX.paper, fill: { color: HEX.line } } }));
@@ -250,7 +295,7 @@ function table(slide, rows, colW, y, name) {
   ], [2.4, 3.2, W - 5.6], 2.3, "Architecture table");
   s.addText("Keys stay on the server. DEMO_MODE=fixtures runs the whole app with no keys, badged DEMO FIXTURE.",
     tb({ x: M, y: 5.9, w: W, h: 0.4, fontSize: 13, color: HEX.muted }));
-  notes(s, 9);
+  notes(s, 10);
 }
 {
   const s = pres.addSlide({ masterName: "CONTENT_DARK", sectionTitle: "Backup for Q&A" });
@@ -264,7 +309,7 @@ function table(slide, rows, colW, y, name) {
   ], [3.8, W - 3.8], 2.3, "Studies table");
   s.addText("Each was built from the app’s own plan and saved with its Flashpoint survey and panel IDs; the model kit study ran live from inside the app.",
     tb({ x: M, y: 4.7, w: W, h: 0.4, fontSize: 13, color: HEX.muted }));
-  notes(s, 10);
+  notes(s, 11);
 }
 
 pres.writeFile({ fileName: OUT }).then(async () => {
