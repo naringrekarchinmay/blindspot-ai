@@ -81,11 +81,23 @@ export const Finding = z.object({
   quotes: z.array(z.string()).optional(),
 });
 
+// Where a live Flashpoint run is. Set only on results with status "running" or "failed".
+export const ResearchProgress = z.object({
+  stage: z.enum(["building_survey", "running_panel", "analyzing", "structuring", "done", "failed"]),
+  message: z.string(),
+  /** 0-1 within the current stage, when Flashpoint reports it. */
+  fraction: z.number().optional(),
+  startedAt: z.string(),
+});
+
 export const ResearchResult = z.object({
   status: z.enum(["completed", "running", "failed"]),
   provenance: Provenance,
   findings: z.array(Finding),
   caveats: z.array(z.string()),
+  /** Live runs only: poll /api/research/status with this id until status is not "running". */
+  jobId: z.string().optional(),
+  progress: ResearchProgress.optional(),
 });
 
 export const Reassessment = z.object({
@@ -112,6 +124,7 @@ export const ResearchPlanRequest = z.object({
   blindSpotId: z.string(),
 });
 export const ResearchRequest = z.object({ plan: ResearchPlan });
+export const ResearchStatusRequest = z.object({ jobId: z.string().min(1) });
 export const ReassessRequest = z.object({
   assessment: InitialAssessment,
   plan: ResearchPlan,
@@ -129,11 +142,13 @@ export type ResearchQuestion = z.infer<typeof ResearchQuestion>;
 export type ResearchPlan = z.infer<typeof ResearchPlan>;
 export type Provenance = z.infer<typeof Provenance>;
 export type Finding = z.infer<typeof Finding>;
+export type ResearchProgress = z.infer<typeof ResearchProgress>;
 export type ResearchResult = z.infer<typeof ResearchResult>;
 export type Reassessment = z.infer<typeof Reassessment>;
 export type AssessRequest = z.infer<typeof AssessRequest>;
 export type ResearchPlanRequest = z.infer<typeof ResearchPlanRequest>;
 export type ResearchRequest = z.infer<typeof ResearchRequest>;
+export type ResearchStatusRequest = z.infer<typeof ResearchStatusRequest>;
 export type ReassessRequest = z.infer<typeof ReassessRequest>;
 
 // Error shape every route returns on failure
