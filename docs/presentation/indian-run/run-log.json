@@ -1,0 +1,30 @@
+{
+  "question": "Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?",
+  "options": [
+    "SoHo",
+    "Upper East Side"
+  ],
+  "seconds": 32.691,
+  "steps": [
+    {
+      "step": "assess",
+      "status": 200,
+      "source": null
+    },
+    {
+      "step": "research-plan",
+      "status": 200,
+      "source": "captured-plan"
+    },
+    {
+      "step": "research",
+      "status": 200,
+      "source": null
+    },
+    {
+      "step": "reassess",
+      "status": 200,
+      "source": null
+    }
+  ]
+}

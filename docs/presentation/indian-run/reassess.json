@@ -1,0 +1,44 @@
+{
+  "before": {
+    "choice": "Upper East Side",
+    "rationale": "Provisionally, the Upper East Side's residential base may support repeat dining and delivery demand at lower assumed rents than SoHo, which suits a cuisine with strong takeout appeal. This rests on unverified assumptions about rent, competition and concept, and whether to open at all is undetermined without financial and demand data."
+  },
+  "after": {
+    "choice": "Upper East Side",
+    "rationale": "Synthetic-panel signals are mixed: SoHo personas reported somewhat higher frequency and more dissatisfaction (a possible gap), while Upper East Side personas indicated higher price tolerance and a resident-heavy base. With tiny, unevenly composed AI-persona groups and no rent or competition data, the evidence is insufficient to overturn the provisional choice, and whether to open at all remains undetermined."
+  },
+  "changed": false,
+  "changedAssumptions": [
+    {
+      "id": "a2",
+      "before": "SoHo traffic skews toward tourists and shoppers, while the Upper East Side skews toward residents who dine out and order delivery repeatedly.",
+      "after": "SoHo demand may skew toward workers and visitors with lower per-meal price expectations (e.g., lunch), while the Upper East Side may skew toward residents with higher price tolerance; the synthetic panel did not show higher Indian-food frequency on the Upper East Side, and this remains an unverified assumption."
+    }
+  ],
+  "supporting": [
+    "q3: 6 of 14 Upper East Side personas expected $35 or more per main versus 2 of 15 SoHo personas, suggesting higher price tolerance.",
+    "q1: Upper East Side personas were mostly residents (12 of 14), loosely consistent with a repeat, resident-driven customer base.",
+    "q5: Delivery and convenience (22 mentions) and consistent quality (24) were top themes, fitting a reliable neighborhood delivery-oriented concept."
+  ],
+  "contradicting": [
+    "q2: 11 of 15 SoHo personas ate Indian food at least monthly versus 8 of 14 Upper East Side personas.",
+    "q4: 6 of 15 SoHo personas were dissatisfied with current options versus 3 of 14 on the Upper East Side, hinting at a possibly underserved SoHo market.",
+    "q5: Demand for lunch specials and deals under $15 suggests a worker-heavy SoHo lunch opportunity a fast-casual concept could capture."
+  ],
+  "limitations": [
+    "Responses come from 30 AI-generated personas, not real people, and are directional only.",
+    "Neighborhood subgroups are tiny (15 and 14) and mix residents and workers very differently, confounding neighborhood comparisons.",
+    "The run was uncalibrated and demographics beyond gender were invented by the generator.",
+    "Q5 theme counts could not be filtered to this specific run.",
+    "Stated frequency and price are not observed spending.",
+    "Rents, competitive density and the founder's concept and capital were not studied, so the go/no-go question is unresolved."
+  ],
+  "confidenceBefore": {
+    "level": "low",
+    "reason": "The recommendation relies entirely on unverified assumptions about rent, demand, competition and concept, with no data provided."
+  },
+  "confidenceAfter": {
+    "level": "low",
+    "reason": "Synthetic, small-sample signals point in mixed directions and key factors like rent and competition remain unstudied."
+  }
+}

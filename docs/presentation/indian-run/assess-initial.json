@@ -1,0 +1,84 @@
+{
+  "decision": "Is it a good idea to open an Indian food restaurant, and should it be located in SoHo or the Upper East Side?",
+  "options": [
+    "SoHo",
+    "Upper East Side"
+  ],
+  "criteria": [
+    "Expected demand from local residents, workers and visitors for Indian cuisine in the neighborhood.",
+    "Commercial rent and build-out costs relative to projected revenue.",
+    "Intensity of existing Indian and comparable-cuisine competition nearby.",
+    "Fit between the restaurant concept (price point, format) and neighborhood customer profile.",
+    "Mix of dine-in, delivery and repeat-customer potential."
+  ],
+  "recommendation": {
+    "choice": "Upper East Side",
+    "rationale": "Provisionally, the Upper East Side's residential density may support steadier repeat and delivery demand at potentially lower rents than SoHo, which suits a neighborhood Indian restaurant. This rests entirely on unverified assumptions, and whether to open at all depends on the concept, budget and operator experience, which were not provided."
+  },
+  "assumptions": [
+    {
+      "id": "a1",
+      "text": "SoHo commercial rents are generally higher than Upper East Side rents for comparable restaurant space.",
+      "source": "assumption"
+    },
+    {
+      "id": "a2",
+      "text": "The Upper East Side is a largely residential neighborhood with households that order delivery and dine out repeatedly.",
+      "source": "public_info"
+    },
+    {
+      "id": "a3",
+      "text": "SoHo foot traffic is driven heavily by shoppers and tourists, favoring trendy or destination concepts over casual repeat dining.",
+      "source": "assumption"
+    },
+    {
+      "id": "a4",
+      "text": "The concept is a mid-priced, casual-to-moderate Indian restaurant rather than a high-end destination venue.",
+      "source": "assumption"
+    },
+    {
+      "id": "a5",
+      "text": "The operator has sufficient capital and restaurant experience to survive an initial ramp-up period.",
+      "source": "assumption"
+    }
+  ],
+  "blindSpots": [
+    {
+      "id": "b1",
+      "question": "How often would residents and workers in each neighborhood eat or order Indian food, and what would they pay, and how satisfied are they with current options?",
+      "whyItMatters": "Unmet demand and willingness to pay directly determine whether either location can cover costs.",
+      "impact": "high",
+      "answerability": "high",
+      "rank": 1
+    },
+    {
+      "id": "b2",
+      "question": "What are actual available rents and lease terms for suitable spaces in each neighborhood right now?",
+      "whyItMatters": "Rent is often the largest fixed cost and could reverse the location ranking.",
+      "impact": "high",
+      "answerability": "medium",
+      "rank": 2
+    },
+    {
+      "id": "b3",
+      "question": "How many Indian restaurants already operate in each area and how well are they performing?",
+      "whyItMatters": "Saturation or a clear gap changes the competitive viability of each option.",
+      "impact": "medium",
+      "answerability": "medium",
+      "rank": 3
+    },
+    {
+      "id": "b4",
+      "question": "What is the intended concept, budget and operator experience level?",
+      "whyItMatters": "A destination or upscale concept might favor SoHo, and inadequate capital could make neither option wise.",
+      "impact": "high",
+      "answerability": "low",
+      "rank": 4
+    }
+  ],
+  "selectedBlindSpotId": "b1",
+  "confidence": {
+    "level": "low",
+    "reason": "No data on demand, rents, competition or the concept was provided, so the recommendation rests on general assumptions."
+  }
+}

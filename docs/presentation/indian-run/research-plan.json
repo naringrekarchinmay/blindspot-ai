@@ -1,0 +1,63 @@
+{
+  "blindSpotId": "b1",
+  "objective": "Compare how often SoHo and Upper East Side residents and workers eat or order Indian food, what they would pay per meal, and how satisfied they are with current nearby options.",
+  "targetSegment": "Adults 21+ who live or work in SoHo or the Upper East Side of Manhattan and eat out or order restaurant delivery at least occasionally, split roughly evenly between the two neighborhoods and between residents and workers.",
+  "sampleSize": 30,
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Which best describes your connection to the neighborhood where you most often eat out or order food?",
+      "type": "single_select",
+      "options": [
+        "Live in SoHo",
+        "Work in SoHo",
+        "Live on the Upper East Side",
+        "Work on the Upper East Side",
+        "Other / neither"
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "In a typical month, how often do you eat Indian food from a restaurant (dine-in, takeout or delivery) near where you live or work?",
+      "type": "single_select",
+      "options": [
+        "Never",
+        "Less than once a month",
+        "1-2 times a month",
+        "3-4 times a month",
+        "More than 4 times a month"
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "For a typical Indian meal for one person (main dish, before tip), what price range would you usually expect to pay?",
+      "type": "single_select",
+      "options": [
+        "Under $15",
+        "$15-$24",
+        "$25-$34",
+        "$35-$49",
+        "$50 or more"
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "How satisfied are you with the Indian food options currently available near where you live or work?",
+      "type": "scale",
+      "options": [
+        "1 - Very dissatisfied",
+        "2 - Dissatisfied",
+        "3 - Neither satisfied nor dissatisfied",
+        "4 - Satisfied",
+        "5 - Very satisfied",
+        "Not sure / no options I know of"
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "What, if anything, would make you eat Indian food more often near where you live or work?",
+      "type": "open_text"
+    }
+  ],
+  "neutralityNotes": "Questions use balanced, symmetric response options, ask both neighborhoods identical items, allow 'never' and 'nothing' answers, and do not mention a planned restaurant or the decision-maker's preferred location."
+}

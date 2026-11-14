@@ -1,4 +1,31 @@
-# Presentation screenshots: football accessory store run
+# Presentation screenshots
+
+## Indian restaurant run (real end to end): `indian-run/`
+
+A real run, start to finish, of:
+
+> *Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?*
+> Options: `SoHo`, `Upper East Side`
+
+1. The app's live research plan for this question was built verbatim as Flashpoint survey `10728c5d-0293-4513-b4a1-b420e56f8202`.
+2. The survey was run on a 30-persona synthetic panel (`01a1db55-6389-7e29-b459-1b3627521a11`); the results are saved in `fixtures/research/indian-capture.json`.
+3. `run-live.mjs` then drove the production app in headless Chromium with **no mocked responses**:
+   - assess and reassess were live Claude calls
+   - plan and findings came from that Flashpoint study, badged CAPTURED
+4. Every API response the browser received is saved next to the screenshots (`assess.json`, `research-plan.json`, `research.json`, `reassess.json`, `run-log.json`). `assess-initial.json` and `plan.json` are the earlier live calls that produced the surveyed plan.
+
+Screenshots are in `indian-run/screenshots/` (same file names as below).
+
+**Result (AI personas, directional):**
+- SoHo personas eat Indian food more often (11 of 15 at least monthly vs 8 of 14) and are less satisfied with current options (6 of 15 dissatisfied vs 3 of 14).
+- Upper East Side personas expect to pay more ($35+: 6 of 14 vs 2 of 15).
+- The app keeps its provisional Upper East Side pick at low confidence and lists the SoHo signals as contradicting evidence.
+
+```bash
+node docs/presentation/run-live.mjs docs/presentation/indian-run http://localhost:3000 "Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?" "SoHo" "Upper East Side" '\b(eat|order|dine|visit|demand)\b'
+```
+
+## Football accessory store run: `screenshots/`
 
 High-resolution (2×, 1440px-wide viewport, dark theme) screenshots of one full run of BlindSpot AI on:
 

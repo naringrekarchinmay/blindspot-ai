@@ -48,6 +48,15 @@ export const CAPTURED_STUDIES: CapturedStudy[] = [
     // In-store purchase intent: a buying word and a channel word.
     blindSpot: [/\b(buy|purchas|shop)/i, /online|in-store|in person|physical/i],
   },
+  {
+    id: "indian",
+    plan: "research/indian-plan.json",
+    result: "research/indian-capture.json",
+    options: ["SoHo", "Upper East Side"],
+    decision: /indian/i,
+    // Diner demand: how often people eat or order Indian food (not rent, competition or concept).
+    blindSpot: [/\b(eat|order|dine|visit|demand)\b/i],
+  },
 ];
 
 const normOption = (s: string) => s.trim().toLowerCase().replace(/^the\s+/, "").replace(/\s+/g, " ");
