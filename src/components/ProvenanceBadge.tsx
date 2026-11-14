@@ -30,6 +30,8 @@ export function StepSourceBadge({ source }: { source: StepSource }) {
   switch (source) {
     case "fixture":
       return <Badge kind="fixture" detail="Sample data, not a live Claude call" />;
+    case "captured-assess":
+      return <Badge kind="captured" detail="Live Claude call failed; showing the saved assessment" />;
     case "captured-plan":
       return <Badge kind="captured" detail="Saved plan the Flashpoint survey was built from" />;
     case "captured-reassess":

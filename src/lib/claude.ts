@@ -51,6 +51,10 @@ async function structured<T>(prompt: string, schema: ZodType<T>): Promise<T> {
     if (err instanceof Anthropic.RateLimitError) {
       throw new ClaudeError("Anthropic rate limit reached; try again shortly", 429, true);
     }
+    // Connection errors subclass APIError with no status; report them as unreachable.
+    if (err instanceof Anthropic.APIConnectionError) {
+      throw new ClaudeError("Could not reach the Anthropic API", 502, true);
+    }
     if (err instanceof Anthropic.APIError) {
       const status = err.status ?? 502;
       throw new ClaudeError(`Anthropic API error (${status})`, 502, status >= 500 || status === 408);

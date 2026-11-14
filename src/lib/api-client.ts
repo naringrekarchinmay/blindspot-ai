@@ -13,11 +13,11 @@ import type {
 
 /**
  * Value of the `x-blindspot-source` header: set when a step came from saved data, not a live call.
- * "fixture" = DEMO_MODE=fixtures (any route); "captured-*" = saved data from the captured Flashpoint run.
+ * "fixture" = DEMO_MODE=fixtures (any route); "captured-*" = saved data for the café demo (captured Flashpoint plan, or a saved Claude output used because the live call failed).
  */
-export type StepSource = "fixture" | "captured-plan" | "captured-reassess" | null;
+export type StepSource = "fixture" | "captured-assess" | "captured-plan" | "captured-reassess" | null;
 
-const STEP_SOURCES = new Set<string>(["fixture", "captured-plan", "captured-reassess"]);
+const STEP_SOURCES = new Set<string>(["fixture", "captured-assess", "captured-plan", "captured-reassess"]);
 
 export type ApiResponse<T> = { data: T; source: StepSource };
 
