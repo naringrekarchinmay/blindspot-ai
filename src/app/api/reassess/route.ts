@@ -1,11 +1,19 @@
 import { NextResponse } from "next/server";
 import { Reassessment, ReassessRequest } from "@/lib/types";
-import { loadFixture } from "@/lib/fixtures";
-import { parseBody } from "@/lib/http";
+import { isDemoMode, loadFixture } from "@/lib/fixtures";
+import { handleError, parseBody } from "@/lib/http";
+import { reassess } from "@/lib/claude";
+
+export const maxDuration = 120;
 
 export async function POST(req: Request) {
   const body = await parseBody(req, ReassessRequest);
   if (!body.ok) return body.res;
-  // TODO(P1): when !isDemoMode(), call Claude. Stub returns the fixture for now.
-  return NextResponse.json(await loadFixture("reassess.json", Reassessment));
+  try {
+    if (isDemoMode()) return NextResponse.json(await loadFixture("reassess.json", Reassessment));
+    const { assessment, plan, result } = body.data;
+    return NextResponse.json(await reassess(assessment, plan, result));
+  } catch (err) {
+    return handleError(err);
+  }
 }

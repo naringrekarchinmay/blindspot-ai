@@ -20,3 +20,13 @@ export async function parseBody<T>(req: Request, schema: ZodType<T>) {
   }
   return { ok: true as const, data: parsed.data };
 }
+
+// Turns a thrown error into the standard {error, retryable} response.
+export function handleError(err: unknown) {
+  if (err && typeof err === "object" && "status" in err && "retryable" in err && err instanceof Error) {
+    const e = err as Error & { status: number; retryable: boolean };
+    return apiError(e.message, e.status, e.retryable);
+  }
+  console.error(err);
+  return apiError("Unexpected server error", 500, true);
+}
