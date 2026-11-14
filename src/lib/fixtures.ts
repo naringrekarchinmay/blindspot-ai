@@ -13,9 +13,62 @@ export async function loadFixture<T>(name: string, schema: ZodType<T>): Promise<
   return schema.parse(JSON.parse(raw));
 }
 
-// The captured Flashpoint study: the plan its survey was built from and the run that answered it.
-export const CAPTURED_PLAN = "research/flashpoint-plan.json";
-export const CAPTURED_RESULT = "research/flashpoint-capture.json";
+// Captured Flashpoint studies: for each, the plan its survey was built from, the run that
+// answered it, and when that plan may be pinned (decision, options and selected blind spot).
+// The plan is pinned only when the user's decision and blind spot are what the study asked,
+// and the findings are served only for that exact plan, so captured data is never paired
+// with questions it doesn't answer.
+export type CapturedStudy = {
+  id: string;
+  plan: string;
+  result: string;
+  options: string[];
+  decision: RegExp;
+  /** Every pattern must match the selected blind spot's question (not its why-it-matters, which
+   *  often mentions demand even for rent or competition blind spots). */
+  blindSpot: RegExp[];
+};
+
+export const CAPTURED_STUDIES: CapturedStudy[] = [
+  {
+    id: "cafe",
+    plan: "research/flashpoint-plan.json",
+    result: "research/flashpoint-capture.json",
+    options: ["Neighborhood A", "Neighborhood B"],
+    decision: /caf[eé]/i,
+    // Late-night demand: would people actually come, and how often.
+    blindSpot: [/visit|demand|patron|want a caf|would (actually )?(go|come|use)|how many (people|residents)|how often/i],
+  },
+  {
+    id: "football",
+    plan: "research/football-plan.json",
+    result: "research/football-capture.json",
+    options: ["Upper East Side", "Lower East Side"],
+    decision: /football|soccer/i,
+    // In-store purchase intent: a buying word and a channel word.
+    blindSpot: [/\b(buy|purchas|shop)/i, /online|in-store|in person|physical/i],
+  },
+];
+
+const normOption = (s: string) => s.trim().toLowerCase().replace(/^the\s+/, "").replace(/\s+/g, " ");
+
+/** The captured study whose plan fits this decision and blind spot, if any. */
+export function studyForScenario(
+  decision: string,
+  options: string[],
+  blindSpot: { question: string; whyItMatters: string } | undefined,
+) {
+  if (!blindSpot) return undefined;
+  const opts = options.map(normOption).sort().join("|");
+  const text = blindSpot.question;
+  return CAPTURED_STUDIES.find(
+    (s) =>
+      s.options.map(normOption).sort().join("|") === opts &&
+      s.decision.test(decision) &&
+      s.blindSpot.every((re) => re.test(text)),
+  );
+}
+
 // Live Claude outputs for the café demo, served only when a live call fails on that exact input.
 export const CAPTURED_ASSESS = "research/assess-capture.json";
 export const CAPTURED_REASSESS = "research/reassess-capture.json";

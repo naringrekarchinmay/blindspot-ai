@@ -32,7 +32,7 @@ Every step shows where its content came from:
 | Badge | Meaning |
 |---|---|
 | **LIVE** | A live Flashpoint synthetic panel ran for this plan. *(Not wired into the app yet; see Limitations.)* |
-| **CAPTURED** | Real saved output, with a timestamp: the Flashpoint synthetic run captured on 2026-11-14 (n=30), the plan its survey was built from, or a saved Claude output shown because a live call failed. |
+| **CAPTURED** | Real saved output, with a timestamp: a Flashpoint synthetic run captured on 2026-11-14 (n=30), the plan its survey was built from, or a saved Claude output shown because a live call failed. |
 | **DEMO FIXTURE** | Labeled sample data (`DEMO_MODE=fixtures`). No research was run. |
 
 Synthetic-panel respondents are **AI personas, not real people**. The UI says so next to every synthetic result, charts are labeled "counts of AI personas", and results are treated as directional.
@@ -52,7 +52,10 @@ API routes (src/app/api/*/route.ts), every body and response validated with zod 
 ```
 
 - **Claude:** `client.messages.parse` with `zodOutputFormat`, so every response is schema-checked. The model comes from `ANTHROPIC_MODEL` (default `claude-opus-5-5`).
-- **Flashpoint:** the study was built and run through Flashpoint's MCP server: survey design, a 30-persona synthetic panel, and analysis. The result is saved in `fixtures/research/flashpoint-capture.json` with its survey and panel IDs.
+- **Flashpoint:** two studies were built and run through Flashpoint's MCP server (survey design, a 30-persona synthetic panel, analysis) and saved with their survey and panel IDs:
+  - **Café, Neighborhood A vs B:** late-night demand (`fixtures/research/flashpoint-*.json`).
+  - **Football accessory store, Upper East Side vs Lower East Side:** in-store vs online buying (`fixtures/research/football-*.json`). Its survey is the exact plan the app generated live for that question.
+- **Pinning:** for those two decisions, when the selected blind spot is the one the study asked about, `/api/research-plan` returns the study's plan (badged CAPTURED) so the findings line up with the questions shown. Studies are listed in `CAPTURED_STUDIES` in `src/lib/fixtures.ts`.
 - **Matching guard:** captured findings are only shown for the exact plan they answered (same question IDs and wording). Any other decision gets a labeled demo fixture, never borrowed numbers.
 - **Errors:** routes return `{ error, retryable }`. The UI shows the message, with a Retry button when it can help.
 
@@ -89,5 +92,5 @@ npm run smoke
 
 - **The research step uses a captured run, not a live one.** The app can reach Flashpoint's MCP server, but it needs a user's OAuth bearer token, and a full live run takes about 3 minutes (build the survey, run the panel, analyze). Live runs from the app, with a polling "running" state, are the next step.
 - **Synthetic personas, uncalibrated.** Only gender was matched to real population figures; age, race, education and income were generated. Neighborhood subgroups are tiny (13 and 16 personas).
-- **One researched scenario.** Only the café A-vs-B question has real research behind it. Other decisions work end to end, but their research step is a labeled demo fixture.
+- **Two researched scenarios.** Only the café (A vs B) and football store (Upper vs Lower East Side) questions have real research behind them. Other decisions work end to end, but their research step says plainly that no study has been run.
 - Stated intent (likelihood, spend) isn't observed behavior. Rent, zoning and competition weren't studied.

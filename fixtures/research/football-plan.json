@@ -1,0 +1,15 @@
+{
+  "_note": "CAPTURED: the exact plan /api/research-plan generated live (Claude, 2026-11-14) for the football accessory store question. Flashpoint survey built from it verbatim; football-capture.json answers these questions. blindSpotId is replaced with the request's id when served.",
+  "blindSpotId": "b1",
+  "objective": "Measure how likely residents and regular visitors of the Upper East Side and Lower East Side are to buy football (American football or soccer) accessories in a physical store versus online, and how often.",
+  "targetSegment": "Adults 18+ who live in, work in, or regularly visit the Upper East Side or Lower East Side of Manhattan, split roughly evenly between the two neighborhoods, including both people who follow football (American or soccer) and people who do not.",
+  "sampleSize": 30,
+  "questions": [
+    { "id": "q1", "text": "Which Manhattan neighborhood do you spend the most time in for shopping or leisure?", "type": "single_select", "options": ["Upper East Side", "Lower East Side", "Both about equally", "Neither"] },
+    { "id": "q2", "text": "In the past 12 months, how many times have you bought football-related accessories (American football or soccer: apparel, scarves, hats, balls, gear, collectibles)?", "type": "single_select", "options": ["Never", "Once", "2-3 times", "4-6 times", "More than 6 times"] },
+    { "id": "q3", "text": "When you buy sports or fan accessories, where do you usually buy them?", "type": "single_select", "options": ["Mostly online", "Mostly in physical stores", "About equally online and in stores", "At stadiums or team venues", "I don't buy these items"] },
+    { "id": "q4", "text": "If a store specializing in football accessories opened in the neighborhood you selected, how likely would you be to shop there in person at least once a year? (1 = very unlikely, 5 = very likely)", "type": "scale", "options": ["1", "2", "3", "4", "5"] },
+    { "id": "q5", "text": "What, if anything, would make you choose a physical store over buying online for these items, or keep you buying online?", "type": "open_text" }
+  ],
+  "neutralityNotes": "Questions treat both neighborhoods, both football types, and both online and in-store channels symmetrically with balanced options including 'never' and 'neither', and never mention the provisional Lower East Side preference."
+}
