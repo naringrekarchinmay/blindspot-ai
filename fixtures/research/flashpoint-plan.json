@@ -1,0 +1,15 @@
+{
+  "_note": "CAPTURED: the exact plan Flashpoint survey a5a02725-7220-4920-8947-e6f053ee93e1 was built from (2026-11-14). flashpoint-capture.json answers these questions. blindSpotId is replaced with the request's id when served.",
+  "blindSpotId": "captured",
+  "objective": "Estimate directional late-night café demand among residents of Neighborhoods A and B.",
+  "targetSegment": "Adults 21-45 living in or near Neighborhood A or B who are out after 10 PM at least occasionally.",
+  "sampleSize": 30,
+  "questions": [
+    { "id": "q1", "text": "Which neighborhood do you live closest to?", "type": "single_select", "options": ["Neighborhood A", "Neighborhood B", "Neither"] },
+    { "id": "q2", "text": "In a typical week, how often are you looking for somewhere to sit and eat or drink after 10 PM?", "type": "single_select", "options": ["Never", "Less than once", "1-2 times", "3+ times"] },
+    { "id": "q3", "text": "How likely would you be to visit a café open until 2 AM within a 10-minute walk?", "type": "scale", "options": ["1", "2", "3", "4", "5"] },
+    { "id": "q4", "text": "What would you typically expect to spend on one late-night café visit?", "type": "single_select", "options": ["Under $5", "$5-10", "$10-20", "Over $20"] },
+    { "id": "q5", "text": "What, if anything, would make a late-night café worth visiting for you?", "type": "open_text" }
+  ],
+  "neutralityNotes": "Questions avoid naming a preferred neighborhood, include a 'Neither' option, and use a balanced 1-5 scale (1 = very unlikely, 5 = very likely)."
+}

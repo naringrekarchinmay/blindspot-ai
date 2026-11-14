@@ -1,0 +1,49 @@
+{
+  "_note": "CAPTURED: live /api/reassess output (Claude, 2026-11-14) on the captured Flashpoint synthetic run (fixtures/research/flashpoint-capture.json). The before side and assumptions come from the demo assessment fixture (fixtures/assess.json), so [Fixture] text is placeholder.",
+  "before": {
+    "choice": "Neighborhood A",
+    "rationale": "[Fixture] Based only on user-provided inputs and general assumptions, A looks more favorable because it is described as having more evening activity."
+  },
+  "after": {
+    "choice": "Neighborhood A",
+    "rationale": "Directional synthetic-panel signal slightly favors A (top-two-box 7/13 vs 7/16, and no '1' ratings in A), but the gap is small and from AI personas, so it only weakly supports keeping A. Rent, competition and real foot traffic remain untested."
+  },
+  "changed": false,
+  "changedAssumptions": [
+    {
+      "id": "a1",
+      "before": "[Fixture] Evening activity in A translates into late-night café demand.",
+      "after": "Synthetic personas near A showed somewhat higher stated interest in a late-night café, but whether this reflects real demand is untested (assumption)."
+    },
+    {
+      "id": "a2",
+      "before": "[Fixture] Residents of B are unwilling to travel for late-night coffee.",
+      "after": "B personas showed mixed interest (7/16 likely, all four strongest rejections), so B is not uniformly uninterested; travel willingness was not measured (assumption)."
+    }
+  ],
+  "supporting": [
+    "q3: Top-two-box likelihood was 7/13 among A personas vs 7/16 among B personas.",
+    "q3: All four lowest ('1') ratings came from B personas; A had none.",
+    "q2: 18 of 30 personas look for a late-night spot at least weekly, suggesting the concept has some directional appeal overall."
+  ],
+  "contradicting": [
+    "q3: The A vs B difference is a matter of a few personas and could easily reverse with real respondents.",
+    "q1: More personas were closest to B (16 vs 13), so B's absolute pool of interested people is equal in count (7 each).",
+    "q4: Most expected spend is $5-10, which may not cover late-night staffing in either neighborhood; this does not favor A specifically."
+  ],
+  "limitations": [
+    "Responses are from 30 AI-generated personas (flashpoint_synthetic), not real residents, and the run was uncalibrated.",
+    "Neighborhood subgroups are tiny (A n=13, B n=16) and cannot support reliable comparison.",
+    "Stated likelihood does not measure actual visit frequency or foot traffic.",
+    "The study did not address rent, operating cost or competition criteria.",
+    "Q5 theme counts could not be filtered to this run, so they may not exactly reflect these personas."
+  ],
+  "confidenceBefore": {
+    "level": "low",
+    "reason": "[Fixture] The recommendation rests on untested assumptions about late-night demand."
+  },
+  "confidenceAfter": {
+    "level": "low",
+    "reason": "The only new evidence is a small, synthetic, directional signal with a marginal A vs B difference, and cost and competition remain unexamined."
+  }
+}
