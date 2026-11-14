@@ -53,3 +53,9 @@ node docs/presentation/capture.mjs "$PWD" "$PWD/docs/presentation/screenshots" h
 ```
 
 It needs `playwright-core` (1.56.1) and a cached Playwright Chromium; it isn't a project dependency.
+
+## Pitch deck and script files
+
+- `BlindSpot-AI-pitch.pptx`: the 3-minute deck (9 slides plus 2 Q&A backups) with the full script in each slide's speaker notes.
+- `BlindSpot-AI-pitch-script.docx`: the same script as a document: pre-stage checklist, timing table, slide-by-slide "Say" and "Do", and Q&A answers.
+- `source/`: `content.js` holds the script both files are built from; `build_pptx.js` (pptxgenjs) and `build_docx.js` (docx) generate them. The deck's two screenshots are crops of `indian-run/screenshots/02-overview.png` and `05-research.png`.
