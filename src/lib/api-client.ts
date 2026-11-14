@@ -9,6 +9,7 @@ import type {
   ResearchPlanRequest,
   ResearchRequest,
   ResearchResult,
+  ResearchStatusRequest,
 } from "./types";
 
 /**
@@ -75,3 +76,12 @@ export const research = (body: ResearchRequest) =>
 
 export const reassess = (body: ReassessRequest) =>
   post<Reassessment>("/api/reassess", body);
+
+export const researchStatus = (body: ResearchStatusRequest) =>
+  post<ResearchResult>("/api/research/status", body);
+
+export type FlashpointStatus = { liveEnabled: boolean; connected: boolean };
+
+export const flashpointStatus = () => post<FlashpointStatus>("/api/flashpoint/status", {});
+
+export const disconnectFlashpoint = () => post<{ ok: boolean }>("/api/flashpoint/disconnect", {});

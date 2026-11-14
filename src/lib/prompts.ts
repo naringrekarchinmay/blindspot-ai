@@ -73,3 +73,23 @@ Re-assess the decision using ONLY this evidence:
 - limitations: sample size, synthetic vs real, anything the study could not show.
 - confidenceBefore: copy the initial confidence. confidenceAfter: updated.`;
 }
+
+export function structureFindingsPrompt(plan: ResearchPlan, analysis: string) {
+  return `A Flashpoint synthetic panel (AI personas, not real people) answered this survey:
+${json(plan.questions)}
+
+Flashpoint's analysis of the responses (the only data you may use):
+<analysis>
+${analysis}
+</analysis>
+
+Turn the analysis into structured findings:
+- n: the number of completed responses the analysis reports. Use 0 if it does not state one.
+- findings: one per survey question, in order, with its questionId.
+  - summary: 1-2 sentences stating what the responses show, using only numbers that appear in the analysis.
+  - distribution: for single_select, multi_select and scale questions, the count per answer option, using the survey's option labels exactly. Include an option only if the analysis gives its count. Empty for open_text.
+  - quotes: up to 3 verbatim persona answers quoted in the analysis. Never write or paraphrase a quote. Empty if none are quoted.
+  - If the analysis has no data for a question, say "Flashpoint's analysis gave no data for this question." with an empty distribution and no quotes.
+- caveats: 1-3 limitations visible in the analysis (sample size, missing questions, anything unusual). Do not repeat that respondents are AI personas.
+Never invent counts, percentages or quotes.`;
+}

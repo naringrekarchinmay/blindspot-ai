@@ -1,11 +1,12 @@
 "use client";
 // Step 3 output: findings with provenance, synthetic notice and caveats.
 import { motion } from "motion/react";
+import type { ReactNode } from "react";
 import { EASE_OUT, Stagger, StaggerItem } from "./motion";
 import type { Finding, ResearchPlan, ResearchResult } from "@/lib/types";
 import { ProvenanceBadge, SyntheticNotice } from "./ProvenanceBadge";
 import { SearchOffIcon } from "./icons";
-import { BulletList, Card, Label } from "./ui";
+import { BulletList, Button, Card, Label } from "./ui";
 
 function DistributionBars({
   distribution,
@@ -100,9 +101,16 @@ function FindingBlock({
 export function ResearchCard({
   result,
   plan,
+  connect,
+  canRunLive,
+  onRunAgain,
 }: {
   result: ResearchResult;
   plan: ResearchPlan;
+  /** Connect-Flashpoint control, shown when no study was run. */
+  connect?: ReactNode;
+  canRunLive?: boolean;
+  onRunAgain?: () => void;
 }) {
   const synthetic = result.provenance.source === "flashpoint_synthetic";
   const unit = synthetic ? "AI personas" : "respondents";
@@ -135,7 +143,7 @@ export function ResearchCard({
           </p>
         )}
         {noData ? (
-          <NoResearchPanel plan={plan} />
+          <NoResearchPanel plan={plan} connect={connect} canRunLive={canRunLive} onRunAgain={onRunAgain} />
         ) : (
           <Stagger className="space-y-3">
             {findings.map((f, i) => {
@@ -163,7 +171,17 @@ export function ResearchCard({
   );
 }
 
-function NoResearchPanel({ plan }: { plan: ResearchPlan }) {
+function NoResearchPanel({
+  plan,
+  connect,
+  canRunLive,
+  onRunAgain,
+}: {
+  plan: ResearchPlan;
+  connect?: ReactNode;
+  canRunLive?: boolean;
+  onRunAgain?: () => void;
+}) {
   return (
     <div className="space-y-4">
       <div className="flex gap-3 rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-sm">
@@ -173,12 +191,18 @@ function NoResearchPanel({ plan }: { plan: ResearchPlan }) {
             No study has been run for this plan, so there are no findings.
           </p>
           <p className="text-slate-300">
-            Nothing below is data. In this build, only the café demo
-            (Neighborhood A vs B) has a captured Flashpoint study behind it.
-            Running a new Flashpoint study takes about 3 minutes and isn&apos;t
-            wired into the app yet, so the reassessment won&apos;t gain any new
-            evidence.
+            Nothing below is data. No captured Flashpoint study matches this
+            plan, and live research needs a connected Flashpoint account, so
+            the reassessment won&apos;t gain any new evidence. Connect
+            Flashpoint to run this plan on a live synthetic panel (it takes a
+            few minutes).
           </p>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {connect}
+            {canRunLive && onRunAgain && (
+              <Button onClick={onRunAgain}>Run live research</Button>
+            )}
+          </div>
         </div>
       </div>
       <div>

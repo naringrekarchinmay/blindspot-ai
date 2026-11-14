@@ -13,3 +13,6 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 .vercel
+
+# Flashpoint OAuth token saved by the in-app sign-in
+.flashpoint/

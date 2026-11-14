@@ -2,15 +2,16 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
-import type { ZodType } from "zod";
+import { z, type ZodType } from "zod";
 import {
   InitialAssessment,
   Reassessment,
   ResearchPlan,
   type AssessRequest,
+  type Finding,
   type ResearchResult,
 } from "./types";
-import { SYSTEM, assessPrompt, reassessPrompt, researchPlanPrompt } from "./prompts";
+import { SYSTEM, assessPrompt, reassessPrompt, researchPlanPrompt, structureFindingsPrompt } from "./prompts";
 
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-opus-5-5";
 
@@ -54,6 +55,9 @@ async function structured<T>(prompt: string, schema: ZodType<T>): Promise<T> {
     // Connection errors subclass APIError with no status; report them as unreachable.
     if (err instanceof Anthropic.APIConnectionError) {
       throw new ClaudeError("Could not reach the Anthropic API", 502, true);
+    }
+    if (err instanceof Anthropic.BadRequestError && /credit balance/i.test(err.message)) {
+      throw new ClaudeError("The Anthropic account behind ANTHROPIC_API_KEY is out of credit", 402, false);
     }
     if (err instanceof Anthropic.APIError) {
       const status = err.status ?? 502;
@@ -107,5 +111,37 @@ export async function reassess(
     before,
     confidenceBefore: assessment.confidence,
     changed: out.after.choice.trim() !== before.choice.trim(),
+  };
+}
+
+const ExtractedFindings = z.object({
+  n: z.number().int(),
+  findings: z.array(
+    z.object({
+      questionId: z.string(),
+      summary: z.string(),
+      distribution: z.array(z.object({ label: z.string(), count: z.number() })),
+      quotes: z.array(z.string()),
+    }),
+  ),
+  caveats: z.array(z.string()),
+});
+
+/** Structures Flashpoint's free-text analysis into findings, using only numbers it contains. */
+export async function structureFindings(plan: ResearchPlan, analysis: string) {
+  const out = await structured(structureFindingsPrompt(plan, analysis), ExtractedFindings);
+  return {
+    n: out.n,
+    caveats: out.caveats,
+    findings: out.findings.map(
+      (f): Finding => ({
+        questionId: f.questionId,
+        summary: f.summary,
+        ...(f.distribution.length && {
+          distribution: Object.fromEntries(f.distribution.map((d) => [d.label, d.count])),
+        }),
+        ...(f.quotes.length && { quotes: f.quotes }),
+      }),
+    ),
   };
 }

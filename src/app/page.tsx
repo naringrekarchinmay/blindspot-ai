@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { MotionConfig } from "motion/react";
 import * as api from "@/lib/api-client";
-import { ApiClientError, type StepSource } from "@/lib/api-client";
+import { ApiClientError, type FlashpointStatus, type StepSource } from "@/lib/api-client";
 import type { InitialAssessment, Reassessment, ResearchPlan, ResearchResult } from "@/lib/types";
 import { AssessmentCard } from "@/components/AssessmentCard";
 import { PlanCard } from "@/components/PlanCard";
 import { ReassessCard } from "@/components/ReassessCard";
 import { ResearchCard } from "@/components/ResearchCard";
+import { ConnectFlashpoint, LiveProgress } from "@/components/LiveResearch";
 import { StepTimeline, type StepStatus } from "@/components/StepTimeline";
 import { Button, ErrorBox, Spinner } from "@/components/ui";
 import { ArrowRightIcon, PlusIcon, SparkIcon, XIcon } from "@/components/icons";
@@ -41,11 +42,19 @@ export default function Home() {
   const [reassessment, setReassessment] = useState<{ data: Reassessment; source: StepSource } | null>(null);
 
   const [loading, setLoading] = useState<Step | null>(null);
+  // A live Flashpoint run in progress (status "running"), shown instead of the spinner.
+  const [liveRun, setLiveRun] = useState<ResearchResult | null>(null);
+  const [fpStatus, setFpStatus] = useState<FlashpointStatus | null>(null);
   const [error, setError] = useState<StepError | null>(null);
 
   // Ignore responses from a flow the user has since restarted.
   const runId = useRef(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const refreshFlashpoint = useCallback(() => {
+    api.flashpointStatus().then(({ data }) => setFpStatus(data), () => setFpStatus(null));
+  }, []);
+  useEffect(refreshFlashpoint, [refreshFlashpoint]);
 
   useEffect(() => {
     if (loading || assessment) bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -116,7 +125,26 @@ export default function Home() {
     resetFrom("research");
     run(
       "research",
-      () => api.research({ plan: plan.data }),
+      async () => {
+        const id = runId.current;
+        let res = await api.research({ plan: plan.data });
+        try {
+          // Live Flashpoint runs come back "running": poll until they finish.
+          while (res.data.status === "running" && res.data.jobId) {
+            setLiveRun(res.data);
+            await new Promise((r) => setTimeout(r, 4000));
+            if (id !== runId.current) return res;
+            res = await api.researchStatus({ jobId: res.data.jobId });
+          }
+        } finally {
+          if (id === runId.current) setLiveRun(null);
+        }
+        if (res.data.status === "failed") {
+          refreshFlashpoint();
+          throw new ApiClientError(`Live Flashpoint research failed: ${res.data.progress?.message ?? "unknown error"}`, 502, true);
+        }
+        return res;
+      },
       ({ data }) => setResult(data),
       runResearch,
     );
@@ -137,6 +165,7 @@ export default function Home() {
     runId.current += 1;
     resetFrom("assess");
     setLoading(null);
+    setLiveRun(null);
     setError(null);
   }
 
@@ -298,9 +327,12 @@ export default function Home() {
                     <Button variant="secondary" onClick={() => resetFrom("plan")}>
                       Pick a different blind spot
                     </Button>
+                    <div className="flex items-center">
+                      <ConnectFlashpoint status={fpStatus} onConnected={refreshFlashpoint} />
+                    </div>
                   </div>
                 )}
-                {spinnerFor("research")}
+                {liveRun ? <LiveProgress result={liveRun} /> : spinnerFor("research")}
                 {errorFor("research")}
               </div>
             )}
@@ -309,7 +341,13 @@ export default function Home() {
 
         {plan && result && (
           <>
-            <ResearchCard result={result} plan={plan.data} />
+            <ResearchCard
+              result={result}
+              plan={plan.data}
+              connect={<ConnectFlashpoint status={fpStatus} onConnected={refreshFlashpoint} />}
+              canRunLive={!!fpStatus?.connected}
+              onRunAgain={runResearch}
+            />
             {!reassessment && (
               <div className="space-y-3">
                 {!loading && (
