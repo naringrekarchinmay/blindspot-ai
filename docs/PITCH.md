@@ -1,57 +1,53 @@
-# BlindSpot AI: pitch and demo script (about 2:45)
+# BlindSpot AI: 3-minute pitch and 3-minute Q&A
 
-**Setup before going on:** run the production build (`npm run build && npm run start`) with the real key, open the app, and leave it on the empty form. Don't run the flow in the hour before; each run spends rate limit. If Claude is slow or rate-limited on stage, the café demo falls back to saved outputs and every step says CAPTURED, so keep going and say so.
+Deck: the "BlindSpot AI pitch" Slides artifact (speaker notes on every slide). Demo question: the Indian restaurant, which has a real Flashpoint study behind it.
 
----
+## Before going on stage
 
-## 0:00 Hook (20s)
+- Check the Anthropic key has credit: analyze and reassess are live Claude calls. If it doesn't, the café demo still works from saved outputs (badged CAPTURED); use it instead and say so.
+- Run the production build (`npm run build && npm run start`), open the app on the empty form, and have the deck on slide 1 in another window.
+- Only claim live Flashpoint "works end to end" if a live run has completed on this machine. Otherwise say it's wired in and the first runs got through survey, panel and analysis.
 
-> "Ask an AI whether to open a late-night café in Neighborhood A or B, and you get a confident answer. But the thing that decides it, whether people near each spot would actually show up at 11 PM, isn't in any public data. The AI doesn't know that it doesn't know. We built BlindSpot AI to find that gap and go ask."
+## Script (3:00)
 
-## 0:20 Step 1, Analyze (35s)
+| Time | Slide | Say / do |
+|---|---|---|
+| 0:00 | 1 Cover | "We're BlindSpot AI. We built an AI that knows what it doesn't know." |
+| 0:10 | 2 Problem | "Ask any AI whether to open an Indian restaurant in SoHo or the Upper East Side and you get a confident answer. What actually decides it is how often people near each spot would eat there and what they'd pay. That isn't on the internet. The AI doesn't know that it doesn't know." |
+| 0:30 | 3 How it works | "Four steps: frame the decision and its assumptions, rank what it doesn't know, run a neutral survey on Flashpoint, reassess honestly." |
+| 0:45 | 4 Demo | Switch to the app. Question: *Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?* Options `SoHo`, `Upper East Side`. Analyze (talk over the ~10s): "Leans Upper East Side, LOW confidence, and says why." Point at the top blind spot. Research this blind spot → Run research: "A real Flashpoint study of 30 AI personas, built from exactly this plan, badged CAPTURED." Reassess. |
+| 1:50 | 6 Reassessment | "It kept Upper East Side, kept confidence low, and listed the SoHo signals as evidence against. Thirty synthetic personas don't settle a lease. 'Insufficient evidence, no change' is a valid answer." (Slide 5 is the fallback if the demo stalls.) |
+| 2:10 | 7 Trust | "Every result says if it's live, captured or a placeholder. Synthetic personas are always called synthetic. It never invents a number." |
+| 2:30 | 8 New today | "Since this afternoon any question can run live: the app builds the survey on Flashpoint, runs a synthetic panel and turns Flashpoint's analysis into findings, with a progress view because it takes minutes." |
+| 2:45 | 9 Close | "It finds what it doesn't know, goes and asks, and tells you honestly whether the answer changes anything. Thank you." |
 
-Click **Use café demo** → **Analyze decision** (about 10s; talk while it loads).
+## Q&A (3:00): short answers
 
-> "First it frames the decision: criteria, a provisional pick, and every assumption it's resting on, each tagged as an assumption or public info. Notice the pick is A, with **low** confidence, and it says why: nothing distinguishes the two yet."
+Keep each answer under 30 seconds. Backup slides 10 (architecture) and 11 (the three studies) are after the close.
 
-Point at **Blind spots, ranked**:
+**Is this real data?**
+It's real Flashpoint output from a synthetic panel: 30 AI personas, not real people. We label it that way on every screen and treat it as directional. Each study is saved with its Flashpoint survey and panel IDs.
 
-> "Then it ranks what it doesn't know by impact and by whether research could answer it. Top pick: would people near each location actually visit late at night, and how often?"
+**Why synthetic personas and not real people?**
+Speed: a synthetic run takes minutes, which suits finding out whether a question is worth asking at all. Flashpoint can also recruit real paid respondents (Prolific, Dynata); the app has a separate `flashpoint_real` label ready for that, but we haven't used it.
 
-*If the top pick isn't about demand, click the demand one.*
+**Can it research a question it hasn't seen?**
+Yes, as of today. With Flashpoint connected, a new plan goes to a live job: build the survey, run up to 30 personas, analyze. It takes a few minutes and the page shows each stage. Without a connection it says plainly that no study was run.
 
-## 0:55 Step 2, Plan (25s)
+**How do you stop it inventing numbers?**
+Every Claude output is checked against a schema. Findings only show for the exact questions they answer. The step that turns Flashpoint's analysis into findings may only use counts and quotes that appear in that analysis, and the reassessment is told to use only the evidence it's given.
 
-Click **Research this blind spot →**.
+**Why didn't the recommendation change?**
+Because the evidence didn't justify it: the signals were mixed and the groups were small. We think an AI that says "no change, low confidence" is more useful than one that flips to look responsive.
 
-> "It turns that blind spot into a short, neutral survey: target segment, sample size, five questions with balanced scales and a 'Neither' option. This is the exact plan we ran on Flashpoint this morning; that's what the CAPTURED badge means."
+**What's "self-improving" about it?**
+It notices the gap in its own knowledge, goes and gets evidence for that specific gap, and updates its assumptions and confidence from it. The reassessment shows exactly which assumptions changed.
 
-## 1:20 Step 3, Research (40s)
+**How is it built?**
+Next.js and TypeScript. Claude (Opus, via the Anthropic SDK with structured outputs) does the reasoning. Flashpoint is called through its MCP server with the user's OAuth token, kept on the server. A demo mode runs the whole app from fixtures with no keys.
 
-Click **Run research →**.
+**What would you do next?**
+Real-respondent runs for decisions where it matters, a cost and time estimate before each run, and researching more than one blind spot per decision.
 
-> "Here's Flashpoint. We built this survey and ran it on a 30-persona synthetic panel through Flashpoint's MCP server. The badge says exactly that: a captured Flashpoint synthetic run, with a timestamp and n=30. And the notice is deliberate: **these are AI personas, not real people**, so we treat this as directional."
-
-Point at Q3:
-
-> "15 of 30 would likely visit. Split by neighborhood it's 7 of 13 near A and 7 of 16 near B, and all four 'very unlikely' answers came from B."
-
-## 2:00 Step 4, Reassess (35s)
-
-Click **Reassess the decision →** (about 10s).
-
-> "Now the honest part. It still says A, but look at the reasoning: the lean is a handful of personas, the absolute numbers are equal, and rent and zoning are still unknown. So confidence stays **low**. It updated its assumptions, listed what supports and contradicts the pick, and named its limitations. It didn't pretend 30 synthetic personas settled the question."
-
-## 2:35 Close (10s)
-
-> "BlindSpot AI: it finds what it doesn't know, researches it with Flashpoint, and tells you honestly whether the answer changes anything. Next step: running Flashpoint studies live from the app instead of from a captured run."
-
----
-
-## If asked
-
-- **"Is this real data?"** It's real Flashpoint output from a synthetic panel of AI personas, captured this morning, not real people. Every step is labeled LIVE, CAPTURED or DEMO FIXTURE.
-- **"Why not live?"** A full Flashpoint run takes about 3 minutes and needs a signed-in OAuth token. We chose a real captured run, honestly labeled, over a 3-minute wait on stage.
-- **"What about other questions?"** Any decision works end to end. Two have real Flashpoint studies behind them: the café, and *"Is it a good idea to open a football accessory store, and should it be in the Upper East Side or the Lower East Side?"* (options `Upper East Side`, `Lower East Side`). There the personas split by channel: Upper East Side mostly in-store (6 of 12), Lower East Side mostly online (6 of 13). A third: *"Is it a good idea to open an Indian food restaurant, and should it be in SoHo or the Upper East Side?"* (options `SoHo`, `Upper East Side`): SoHo personas eat it more often and are less satisfied, while Upper East Side personas expect to pay more. Anything else says plainly that no study has been run.
-- **"Can you research a new question?"** Yes, offline: the football study was generated by the app and run on Flashpoint in about 3 minutes during the hackathon. Running it from inside the app is the next step.
-- **"How do you stop it inventing numbers?"** Structured outputs checked against a schema, findings only shown for the exact questions they answer, and every number in the reassessment comes from the findings.
+**What are the limits?**
+Thirty AI personas are a directional signal, not a market study. Rent, competition and zoning aren't researched. A live run takes minutes, so it isn't instant.
